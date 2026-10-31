@@ -1,6 +1,6 @@
 > Kaspa Testnet-10 only. Internal self-test, no Pulse. Running status, updated with each attempt.
 
-# Status · 30 Oct 2026 · a6 scored 8/10 · desk clock FIXED · share rule dropped (plan 2b, 18:06 CET) · **a7 SCORED 10/10** (5.32 hops/s) · **a8 (2 h) SCORED 7/10** (5.06 hops/s, boson lane ran out of coins) · a9 9/10, **criterion 9 changed 31 Oct 07:36 CET (stp): 0 own tx at END+10 min** → a9 unconfirmed (counts not logged; 3+6 stuck own tx seen at END+75 min) · **a10 (2 h) SCORED 7/10** (5.08 hops/s; fails 3 mini node freeze, 7 desk RPC spike, 9 stuck race losers → RBF sweep fix) · **a11 (2 h) SCORED 9/10** (5.41 hops/s, best yet; only fail 3: landing 98.92 %, no freeze) · **a12 (2 h) SCORED 5/10** (5.34 hops/s; 3 home-network outages: fails 2, 3, 5, 6; plus 9: 1 new own tx) · **a13 (2 h) RUNNING 19:45–21:45Z (20:45–22:45 CET), same setup as a12 (stp 19:54 CET "Keep going until 10/10")**
+# Status · 30 Oct 2026 · a6 scored 8/10 · desk clock FIXED · share rule dropped (plan 2b, 18:06 CET) · **a7 SCORED 10/10** (5.32 hops/s) · **a8 (2 h) SCORED 7/10** (5.06 hops/s, boson lane ran out of coins) · a9 9/10, **criterion 9 changed 31 Oct 07:36 CET (stp): 0 own tx at END+10 min** → a9 unconfirmed (counts not logged; 3+6 stuck own tx seen at END+75 min) · **a10 (2 h) SCORED 7/10** (5.08 hops/s; fails 3 mini node freeze, 7 desk RPC spike, 9 stuck race losers → RBF sweep fix) · **a11 (2 h) SCORED 9/10** (5.41 hops/s, best yet; only fail 3: landing 98.92 %, no freeze) · **a12 (2 h) SCORED 5/10** (5.34 hops/s; 3 home-network outages: fails 2, 3, 5, 6; plus 9: 1 new own tx) · **a13 (2 h) SCORED 7/10** (5.48 hops/s, best 2 h rate; no outage; fails 2 and 5: desk lane ran out of coins at 21:13Z; 3: landing 98.31 %) · **a14 (2 h) RUNNING 23:45–01:45Z (00:45–02:45 CET), a13 setup + desk lane funding 16,000 usable tKAS**
 
 **[RUNBOOK](RUNBOOK.md)**: every problem a1–a7, how it was solved, and the launch checklist.
 
@@ -15,10 +15,13 @@
 | a10 (2 h) | 7/10 | 5.08 | 3: mini node froze 40 s at the end (memory); 7: desk RPC 1,785 ms; 9: 22 own race losers stuck (fixed: `sweep-ours.mjs`) |
 | a11 (2 h) | **9/10** | **5.41** | 3: landing 98.92 % (78 single empty seconds, network floor; no freeze). a10 fixes all held |
 | a12 (2 h) | 5/10 | 5.34 | 3 local network outages (desk NIC link down + mini lost internet, 9–16 s each): 2, 3, 5, 6; landing 97.33 % (98.66 % outside the outages); 9: 1 new own tx with no live input |
+| a13 (2 h) | 7/10 | **5.48** | 2, 5: desk lane out of coins from 21:13Z (desk landed 22.6 %, twice a12's share); 3: landing 98.31 % (single empty seconds, no outage). 9 passed (0 new own tx) |
 
 a6 (15:00–15:30Z): no freeze. 3 phantom tips, each recovered in ~5.4 s. 843 `UNACCEPT`, 0 `STALL`. Landing seconds 99.22 %, node RPC p95 4 / 2 ms. `RECOUNT_OK rows=4` (7,732 vs hop log 7,734). [ATTEMPT-a6](logs/selftest-2026-10-30/step3-base/ATTEMPT-a6.md) · [REVIEW](logs/selftest-2026-10-30/step3-base/REVIEW.md)
 
 ## Open flaws and issues
+- **Landing-seconds floor (a13, criterion 3):** 98.31 % with no outage, no freeze, 108 of 112 gaps single seconds. a7–a13: 99.28 / 99.49 / 99.32 / 98.85 / 98.92 / 98.66 (outside outages) / 98.31 %. The last four 2-hour runs are all below 99 %. Not fixed by code so far; the 99 % rule stays (stp's rule). [ATTEMPT-a13](logs/selftest-2026-10-30/a13/ATTEMPT-a13.md)
+- ~~**Desk lane burn (a13)**~~ desk lane landed 22.6 % (a12 12.0 %) and ran dry at 21:13Z. a14: desk `usable_min_tkas` 7,000 → 16,000 (RUNBOOK 16).
 - **Home network drops (a12, 31 Oct):** desk NIC link down 3 times in the run (16:14, 16:16, 16:29Z) and the mini lost internet in the same seconds; 15 such drops on the desk on 29–31 Oct. Cost a12 four criteria. stp to check router/switch/cable (RUNBOOK 15). [ATTEMPT-a12](logs/selftest-2026-10-30/a12/ATTEMPT-a12.md)
 - ~~**Mini memory (31 Oct, a10)**~~ fixed 31 Oct 11:10Z with stp's OK: mini kaspad restarted gracefully, `--ram-scale 0.4`, private 13.9 → 1.8 GB. See [RUNBOOK](RUNBOOK.md) 13.
 - **Stuck own txs with no live input** (1 a10 hop on both nodes, 1 a9 leftover): cannot be swept; stay until a kaspad restart. See [RUNBOOK](RUNBOOK.md) 12.

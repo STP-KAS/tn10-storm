@@ -1,0 +1,3 @@
+source,from_utc,to_utc,events
+desk e2fnexpress 27/32 (NIC link down/up),2026-10-31T16:30:00Z,2026-10-31T22:26:00Z,0
+mini NCSI 4042 (main adapter),2026-10-31T16:30:00Z,2026-10-31T22:26:00Z,0

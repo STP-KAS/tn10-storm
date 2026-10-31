@@ -145,6 +145,13 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - **Desk NIC settings (31 Oct 19:55 CET, stp "Full authority"):** read without admin: `*EEE` Energy Efficient Ethernet **Off** (0), `*IdleRestriction` Disabled (0), `PnPCapabilities` unset (Windows may power the card down; default). The agent session on the desk is not elevated, so "allow the computer to turn off this device" was **not** changed; nothing else changed, no driver update. To change it, stp in an admin shell: `Set-ItemProperty <adapter class key> PnPCapabilities 24` (takes effect after a disable/enable of the card), only before a run's START.
 - **a13 pre-launch (checklist 18):** desk `e2fnexpress` 27/32 last at 16:29Z (a12), none after.
 
+## 16. a13 scored (7/10, 31 Oct): desk lane ran dry; landing floor
+- **Symptom:** `POOL_LOW sender=desk` from 21:05Z, desk pool 0 coins > 3 tKAS at 21:13:04Z, desk attempts drop from ≈ 11,500 to ≈ 570 per 10 min, 114 desk seconds without an attempt (criteria 2, 5); total rate 5.6 → 4.9 hops/s for the last 30 min.
+- **Cause:** the desk lane won far more races than before (22.6 % of landed hops, a12 12.0 %) and spent its 8,060 usable tKAS on 8,805 landed hops (≈ 0.92 tKAS per landed hop). Funding was sized from the a12 desk burn.
+- **Fix:** a14 desk `usable_min_tkas` 7,000 → 16,000 (`fund-lanes14.mjs`, funded to × 1.15, preflight checks it). Size each lane for the case where it wins the most it has won in any run, not the last run's share (checklist 19).
+- **Criterion 3:** 98.31 % with no outage and no freeze (108 of 112 gaps single seconds). Not caused by the desk pool (98.38 % in the 80 min before it ran dry). Rule unchanged.
+- **Network:** no desk link drop and no mini NCSI loss in a13 (checklist 18 check done after END too).
+
 ## Launch checklist
 1. Admin/clock: `w32tm /stripchart … /samples:3` within ±20 ms; config `clock_gate: fail`, `clock_max_ms: 80`.
 2. Orchestrators started with **pwsh 7**, **detached** (`Start-Process`), never from an agent shell that can be cut off.
@@ -164,3 +171,4 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 17. Size lane funding from the last run's usable-tKAS burn × 1.3 (RUNBOOK 14), not the run before.
 18. Check both machines' network-card / NCSI events for the last hours before launch (RUNBOOK 15); if the desk link dropped, tell stp before starting.
 16. Check the mini's free memory before launch (a10: ≈ 1 GB free, kaspad 14 GB private) and tell stp if it is that low.
+19. Fund every lane for its highest share seen so far (a13: desk 22.6 % ⇒ desk ≥ 16,000 usable tKAS for 2 h), and re-check genesis keys (≥ 3 coins ≥ 15 tKAS; a13 left 1 each).
