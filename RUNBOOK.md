@@ -1,6 +1,6 @@
 > Kaspa Testnet-10 only. Internal self-test, no Pulse. Fall-back guide for future runs.
 
-# RUNBOOK · every problem from a1 to a14 and how it was solved
+# RUNBOOK · every problem from a1 to a15 and how it was solved
 
 Each entry: **symptom → cause → fix → how it was verified → commit.** Times are UTC. Details live in the ATTEMPT files under [`logs/selftest-2026-10-30/step3-base/`](logs/selftest-2026-10-30/step3-base/).
 
@@ -160,6 +160,11 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - **Criterion 3 floor:** 98.44 % (98.53 % outside the planned window), 88 single empty seconds, longest run 5 s. a7–a14: 99.28 / 99.49 / 99.32 / 98.85 / 98.92 / 98.66* / 98.31 / 98.53* %. **Proposed rule** (not adopted, wording of the 99 % rule unchanged): ≥ 98 % of seconds and no more than 5 s missed in a row. a14 passes it with and without the window.
 - **Decision (stp, 31 Oct 23:47 CET, "Ok go"):** after a14, whatever it scores, go to the 3× ladder (step 4: 4 families, 3× rate), not another 4-family rerun. a13/a14 are accepted as proof that the 1× setup is stable.
 - **Mini memory is the blocker for 3×:** free RAM 806 MB at a14 START, minimum 736 MB (23:46:14Z), below 1 GB for the first 12 min, then 1.3–2.0 GB; 1,957 MB at ~02:25Z. kaspad private grew 1.82 GB (restart 31 Oct 11:20Z) → 2.84 GB (11:58Z) → 7.86 GB (1 Nov ~02:25Z), commit 15.6 / 18.3 GB. a10 froze at about 1 GB free. The 3× step was **not launched**. Fix needs stp: OK a graceful mini kaspad restart (procedure in 13, same args, `--ram-scale 0.4`) right before the 3× launch; run step 4 with a mini RAM guard that stops the senders below 1 GB free.
+
+## 18. a15 = ladder step 4 (3×, 1 Nov): mini kaspad restart and RAM guard
+- **Mini kaspad restart (stp OK 1 Nov 08:50 CET)**, procedure of 13 unchanged: Ctrl+C 07:52:46Z, stopped 07:52:49Z, restarted 07:52:58Z from the same start script (`--ram-scale 0.4`). Private 7.60 → 0.49 GB, free RAM 2,077 → 6,983 MB; 5,836 MB at launch. Mempool emptied again (mini pre-START 0 own).
+- **RAM guard for runs above 1×** (`tools/storm/ram-guard.mjs` on the mini, `ram-guard-recv.mjs` on the desk, port 18601, handoff token): 2 reads in a row (5 s apart) below 1,024 MB between START−60 s and END → `control/STOP` on both machines. The desk firewall already allows node inbound; health checked from the mini at launch.
+- `mk-run8.ps1`/`mk-run9.ps1` hard-code rate 5: set `schedule[0].rate` in both run configs after creating them (desk and mini must match).
 
 ## Launch checklist
 1. Admin/clock: `w32tm /stripchart … /samples:3` within ±20 ms; config `clock_gate: fail`, `clock_max_ms: 80`.
