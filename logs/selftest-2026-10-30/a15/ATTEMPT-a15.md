@@ -40,5 +40,46 @@
 - Launch: desk `desk-a11.ps1` 10:50:56Z, `GUARD_PRE exit=2 refused=1`, guard receiver health 200. Mini `mini-a8.ps1` 10:51Z, `PREFLIGHT_GENESIS exit=0`, RAM guard on 10:51:33Z (desk health 200).
 - Tag s3a15b. **Family check 11:05Z, START 11:15:00Z (12:15 CET), END 11:45:00Z (12:45 CET)**, recovery to 12:05Z.
 
-## Result
-Pending (scoring routine after END + 20 min).
+## Run (second slot)
+- Mini genesis + `HANDOFF ok` 11:04:59Z, desk `PREFLIGHT exit=0` 11:05:05Z, `guard exit=0`, `LAUNCH exit=0` 11:05:09Z.
+- **START 11:15:00Z (12:15 CET)** (`START senders=desk,mini,boson families=4 rate=15`). **END 11:45:00Z (12:45 CET)**, `SENDERS_EXITED left=0` 11:45:03Z. RBF sweep END+75 s / 3 / 6 min: 0 own tx on either node, nothing to replace. Census 11:55:07Z, `RECOVERY_DONE` 12:05Z on both.
+- **RAM guard: no trip.** Mini `RAM_GUARD off tripped=0` (11:45:07Z), no `RAM_GUARD_TRIP` in the mini phase log, no `GUARD_STOP` in the desk phase log. Mini free RAM ([ram-guard](data/ram-guard-mini-a15.csv)): **2,180 MB at START, minimum 1,661 MB (11:29:51Z), 1,841 MB at END**, 0 of 360 window reads below 1,024 MB (0 below 1,500). After scoring (~12:25Z): 2,333 MB free, kaspad private 5.15 GB (up since the 07:52:58Z restart).
+- Network: 0 desk `e2fnexpress` events from 10:40Z to scoring, adapter up at 1 Gbps; both nodes 8 peers and synced in every window row; 0 `SENDER_OFF`. The mini NCSI log shows 5 entries 4042 with an invalid timestamp (year 2096) that cannot be placed in time; nothing in the run logs points to a network loss.
+- Housekeeping: the desk RAM-guard receiver (port 18601) was still running after `RECOVERY_DONE`; stopped at scoring (~12:25Z). Nothing else stopped by hand; kaspad untouched on both machines.
+
+## Result · scored Sun 1 Nov 2026, ~13:25 CET · **9/10 (strict and under the proposed rule)**
+
+**Not comparable with a14:** 3 lanes instead of 4 (muon skipped), 30 min instead of 2 h, rate 15 instead of 5, fresh mini kaspad.
+
+`score.mjs` (on the box, from logs copied read-only from desk and mini) + `mempool-ours.jsonl`; recount on the mini after END (`recount.mjs`, kit8). Gap lengths from the same hop log (counts only). Data: [data/](data/) (counts only, no ids).
+
+| # | Criterion | Result | Numbers |
+|---|---|---|---|
+| 1 | Pre-checks (clock, sync, peers, disk) | PASS | desk clock +1.2 / +1.6 ms (10:50Z), −1.3 ms preflight, +1.0 ms after END; mini +26.8 ms (10:51Z), +6.8 ms after END (rule: within 100 ms); synced, 8 peers |
+| 2 | Every lane every second | PASS | desk 1,800 · mini 1,800 · boson 1,800 of 1,800 s |
+| 3 | Landing ≥ 99 % of seconds | **FAIL** | **97.50 %** (1,755 / 1,800), 45 missed in 38 gaps (36 single seconds, one 5 s at 11:33:10Z, one 4 s at 11:42:34Z). Per 5 min: 7 9 4 14 3 8 |
+| 3′ | *Proposed rule (not adopted): ≥ 98 % and no more than 5 s missed in a row* | **FAIL** | longest run 5 s passes, but 97.50 % < 98 % |
+| 4 | Non-contention errors ≤ 1 % | PASS | desk 0 / 107,996 · mini 0 / 107,992 · boson 0 / 107,678. Contention: desk 96,929 (89.8 %), mini 96,948, boson 96,663 |
+| 5 | Desk lane | PASS | 0 errors, attempts in 1,800 / 1,800 s; share **2.10 %** (reported) |
+| 6 | Other lanes | PASS | mini and boson every second, 0 errors; shares mini 4.63 %, boson 93.28 % (reported) |
+| 7 | Node RPC p95 < 50 ms, max < 250 ms | PASS | desk p95 2, max 17 ms; mini p95 2, max 27 ms. Sender RPC (reported): desk p95 1 / max 32, mini 57 / 655, boson 43 / 2,511 ms |
+| 8 | Logs every 5 s | PASS | 359 / 360 node-watch rows in the window, max gap 5.017 / 5.042 s; 0 unsynced rows, peers never below 8 |
+| 9 | 0 own tx at END + 10 min | PASS | 11:55:07Z: desk 0 own (1 in mempool), mini 0 own (0). **Strict 0** (the old desk leftover is gone since the mini restart) |
+| 10 | Handoff, guard, post-end, recount | PASS | `GUARD_PRE exit=2 refused=1`, `HANDOFF ok`, preflight 0, `RECOUNT_OK rows=4`, `RECOUNT_MATCH hoplog=11027 recount=11031 diff_pct=0.036` |
+
+**Score: 9/10** (3). Under the proposed landing rule also 9/10 (3′ fails on the 98 % part).
+
+**Hops:** recount **11,031 = 6.13 hops/s** (f1 2,788 · f2 2,764 · f3 2,752 · f4 2,727); hop log 11,027 lines, all unique, 239 back-fill, 34 resync, 0 revert. Landed (non-back-fill) per 10 min (hops/s): 5.92 5.90 6.16.
+**3× rate did not triple the hops.** Attempts per lane went to ≈ 60/s (3×), but landed hops rose only to 6.13/s (a14 5.57/s at 1×, 4 lanes). Contention rejects are ≈ 90 % of attempts (a14 ≈ 70 %). Each family still lands ≈ 1.5 hops/s, so the family chain (one hop per accepted parent), not the send rate, sets the ceiling. More rate mostly adds races and lowered landing (97.5 %).
+**Freezes / stalls:** 0 `STALL`, 0 `PROC_EXIT`, 0 `SENDER_OFF`, 0 `TIP_BACK`, 0 `POOL_LOW`, 1,085 `UNACCEPT`. Longest all-family landing gap 5.4 s (11:33:09Z, all 4 families at once). Sender stderr empty; mini coordinator stderr only the 34 resync lines.
+**Mempool:** desk 1–58 before START, 1–56 during, 1–51 after; mini 0–58 / 0–54 / 0–51 (other people's TN10 traffic).
+**Pools (coins > 3 tKAS, start → min → end):** desk 1,501 → 1,137 → 1,261, mini 1,072 → 705 → 832, boson 4,183 → 3,058 → 3,265. 0 `POOL_LOW`.
+
+### What failed and why
+- **Criterion 3 (97.50 %).** No outage, no freeze, no guard trip: 36 of 38 gaps are single seconds, plus one 5 s and one 4 s gap where all four families paused together. Lower than every 1× run (a7–a14: 98.31–99.49 %); at 3× the lanes mostly race each other (≈ 90 % contention). Rule unchanged.
+
+### What worked
+- Mini memory held at 3× after the restart (min 1,661 MB, guard never armed near the limit). Node RPC stayed fast on both nodes. 0 non-contention errors on all lanes, 0 own tx left, recount matched to 0.036 %.
+
+### Next ladder step (proposal for stp)
+Rate is not the lever: 3× the attempts gave ≈ +10 % hops and cost landing. Proposed step 5: **8 families at 1× rate (rate 5), 30 min**, same lanes (muon back in if its public node answers), mini RAM guard on, fresh genesis for 8 families; fund lanes to the a14 targets and check the mini still has ≥ 2 GB free at launch. More families should raise hops/s roughly in proportion if the per-family ceiling (≈ 1.5 hops/s) holds.

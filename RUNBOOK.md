@@ -166,6 +166,13 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - **RAM guard for runs above 1×** (`tools/storm/ram-guard.mjs` on the mini, `ram-guard-recv.mjs` on the desk, port 18601, handoff token): 2 reads in a row (5 s apart) below 1,024 MB between START−60 s and END → `control/STOP` on both machines. The desk firewall already allows node inbound; health checked from the mini at launch.
 - `mk-run8.ps1`/`mk-run9.ps1` hard-code rate 5: set `schedule[0].rate` in both run configs after creating them (desk and mini must match).
 
+## 19. a15 scored (9/10, 1 Nov): 3× rate on 3 lanes
+- **Result:** 9/10, only criterion 3 fails: landing **97.50 %** (45 missed seconds; 36 single, one 5 s, one 4 s). The proposed rule also fails (< 98 %). 3 lanes (muon skipped, public node down), 30 min: **not comparable with a14**.
+- **Rate is not the lever:** 3× attempts (≈ 60/s per lane) gave 6.13 hops/s (a14 5.57 at 1×, 4 lanes). Contention rejects ≈ 90 % of attempts (a14 ≈ 70 %); each family still lands ≈ 1.5 hops/s, bounded by its own chain (each hop needs the previous one accepted). Next ladder step should add families, not rate.
+- **Mini RAM guard verified in use:** armed START−60 s to END, 0 trips; free RAM 2,180 → min 1,661 → 1,841 MB with kaspad restarted 3.5 h earlier. 2 GB at launch (checklist 20) was enough for 3×.
+- **Leftover process:** the desk RAM-guard receiver (`ram-guard-recv.mjs`, port 18601) kept running after `RECOVERY_DONE` and held `out/ram-guard-recv.err` open (the log zip failed on the locked file; copy the run dir first, then zip). Stopped by hand at scoring. Fix for the next run: the desk orchestrator stops the receiver at recovery end.
+- The mini NCSI log can show entries with an invalid timestamp (year 2096); use the run's peer and `SENDER_OFF` rows to judge network loss instead.
+
 ## Launch checklist
 1. Admin/clock: `w32tm /stripchart … /samples:3` within ±20 ms; config `clock_gate: fail`, `clock_max_ms: 80`.
 2. Orchestrators started with **pwsh 7**, **detached** (`Start-Process`), never from an agent shell that can be cut off.
@@ -187,3 +194,4 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 16. Check the mini's free memory before launch (a10: ≈ 1 GB free, kaspad 14 GB private) and tell stp if it is that low.
 19. Fund every lane for its highest share seen so far (a13: desk 22.6 % ⇒ desk ≥ 16,000 usable tKAS for 2 h), and re-check genesis keys (≥ 3 coins ≥ 15 tKAS; a13 left 1 each).
 20. Mini free RAM ≥ 2 GB at launch and a RAM guard for any run above 1× (a14: 736 MB at 1×); kaspad restarts only with stp's OK.
+21. Stop the desk RAM-guard receiver (port 18601) after recovery if the orchestrator has not (a15: still running after `RECOVERY_DONE`).

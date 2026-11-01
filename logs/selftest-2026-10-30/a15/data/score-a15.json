@@ -1,0 +1,78 @@
+{
+ "crit9": {
+  "rule": "0 own tx at END+10 min",
+  "nodes": [
+   {
+    "label": "desk",
+    "utc": "2026-11-01T11:55:07.308Z",
+    "ours": 0,
+    "total": 1,
+    "ours_pre_start": 0,
+    "ours_new": 0
+   },
+   {
+    "label": "mini",
+    "utc": "2026-11-01T11:55:07.432Z",
+    "ours": 0,
+    "total": 0,
+    "ours_pre_start": 0,
+    "ours_new": 0
+   }
+  ],
+  "pass": true,
+  "pass_excl_pre_start": true
+ },
+ "window_s": 1800,
+ "hops_landed_in_window": 10788,
+ "hops_backfill": 239,
+ "attributed": 10788,
+ "land_secs": 1755,
+ "land_secs_pct": 97.5,
+ "lanes": [
+  {
+   "lane": "desk",
+   "att": 107996,
+   "ok": 11067,
+   "cont": 96929,
+   "noncont": 0,
+   "landed": 226,
+   "noncont_pct": 0,
+   "landed_share_pct": 2.1,
+   "landed_share_exact_pct": 2.095,
+   "noncont_pass": true,
+   "every_second_pass": true,
+   "share_rule": "reported_only",
+   "secs_attempting": 1800
+  },
+  {
+   "lane": "mini",
+   "att": 107992,
+   "ok": 11044,
+   "cont": 96948,
+   "noncont": 0,
+   "landed": 499,
+   "noncont_pct": 0,
+   "landed_share_pct": 4.6,
+   "landed_share_exact_pct": 4.626,
+   "noncont_pass": true,
+   "every_second_pass": true,
+   "share_rule": "reported_only",
+   "secs_attempting": 1800
+  },
+  {
+   "lane": "boson",
+   "att": 107678,
+   "ok": 11015,
+   "cont": 96663,
+   "noncont": 0,
+   "landed": 10063,
+   "noncont_pct": 0,
+   "landed_share_pct": 93.3,
+   "landed_share_exact_pct": 93.28,
+   "noncont_pass": true,
+   "every_second_pass": true,
+   "share_rule": "reported_only",
+   "secs_attempting": 1800
+  }
+ ]
+}

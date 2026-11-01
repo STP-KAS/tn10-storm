@@ -1,0 +1,16 @@
+2026-11-01T10:50:56Z WATCH node=desk pid=37464 receiver_pid=16800 post_end_pid=24144
+2026-11-01T10:50:57.0223646Z guard exit=10
+2026-11-01T10:50:57Z GUARD_PRE exit=2 refused=1
+2026-11-01T11:05:01Z HANDOFF seen_on_desk
+2026-11-01T11:05:05Z PREFLIGHT exit=0
+2026-11-01T11:05:09.1856979Z guard exit=0
+2026-11-01T11:05:09Z LAUNCH exit=0
+2026-11-01T11:15:00Z START senders=desk,mini,boson families=4 rate=15
+2026-11-01T11:45:00Z END reason=window
+2026-11-01T11:45:03Z SENDERS_EXITED left=0
+2026-11-01T11:46:21Z SWEEP at=END+75s replaced=0 failed=0
+2026-11-01T11:48:07Z SWEEP at=END+180s replaced=0 failed=0
+2026-11-01T11:51:06Z SWEEP at=END+360s replaced=0 failed=0
+2026-11-01T11:55:07Z CRIT9 node=desk ours=0 ours_new=0
+2026-11-01T11:55:07Z CRIT9 node=mini ours=0 ours_new=0
+2026-11-01T12:05:13Z RECOVERY_DONE minutes=20
