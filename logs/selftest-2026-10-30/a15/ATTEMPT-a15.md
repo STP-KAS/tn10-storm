@@ -23,5 +23,10 @@
 - Desk `desk-a11.ps1` (kit10, pwsh 7, detached) 08:07:37Z, `GUARD_PRE exit=2 refused=1`. Mini `mini-a8.ps1` (kit8, detached) 08:08Z, `PREFLIGHT_GENESIS exit=0`, guard on 08:08:18Z.
 - Config: tag s3a15, 4 families, **rate 15**, lanes desk/mini/muon/boson, `usable_min_tkas` desk 16,000 / mini 9,000 / muon 11,000 / boson 32,000. **Family check 08:25Z, START 08:35:00Z (09:35 CET), END 09:05:00Z (10:05 CET)**, RBF sweep END+75 s / 3 / 6 min, census END+10 min, recovery to 09:25Z.
 
-## Result
-Pending (scoring routine after END + 20 min).
+## First slot aborted (muon public node down), no hop sent
+- Mini genesis 4 families 08:24:56–08:24:59Z, `HANDOFF ok` 08:24:59Z, desk `HANDOFF seen_on_desk` 08:25:02Z.
+- Desk `PREFLIGHT exit=20` 08:25:28Z → `LAUNCH_ABORT reason=preflight`: lane muon `err=timeout` (desk, mini, boson pass: 1,501 / 1,072 / 4,183 coins; clock +1.6 ms). Manual preflight 08:26Z: muon timeout again. From the box the public muon endpoint gave no HTTP answer at all from 08:27 to 08:38Z (boson answered), so the public node is down, not our side.
+- Stopped cleanly 08:27Z: mini orchestrator, coordinator, broker, post-end, watch, RAM guard; desk orchestrator, receiver, watch, post-end, guard receiver. Both run dirs kept as `step3-a15-abort1`. No sender ever started; kaspad untouched (mini still on the 07:52:58Z restart).
+- Mini free RAM by then: 4,664 MB at 08:24Z (5,836 MB at 08:08Z): the fresh node is warming up.
+- Relaunch needs muon back (fresh genesis, new slot), or a decision to run step 4 on 3 lanes.
+
