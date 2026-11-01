@@ -30,3 +30,4 @@
 - Mini free RAM by then: 4,664 MB at 08:24Z (5,836 MB at 08:08Z): the fresh node is warming up.
 - Relaunch needs muon back (fresh genesis, new slot), or a decision to run step 4 on 3 lanes.
 
+- Relaunch check 09:21–09:22Z (scheduled): public muon node still down. 5 HTTP probes from the box timed out at 8 s with no answer and a WebSocket upgrade timed out at 10 s; boson answered every probe (101 on upgrade). No relaunch: running step 4 on 3 lanes is stp's call. Nothing started on desk or mini; kaspad untouched.
