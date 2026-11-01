@@ -1,0 +1,7 @@
+source,utc,event,note
+desk e2fnexpress 27 (NIC link down),2026-10-31T23:54:11.751Z,link_down,planned: stp NIC power-management fix + adapter restart (admin PowerShell)
+desk e2fnexpress 32 (NIC link up),2026-10-31T23:54:14.476Z,link_up,planned
+desk e2fnexpress 27 (NIC link down),2026-10-31T23:55:13.365Z,link_down,planned (second adapter restart)
+desk e2fnexpress 32 (NIC link up),2026-10-31T23:55:16.235Z,link_up,planned; 1 Gbps after
+desk e2fnexpress 27/32 other,2026-10-31T16:30:00Z..2026-11-01T02:30:00Z,none,no unplanned link drop
+mini NCSI (main adapter),2026-10-31T23:00:00Z..2026-11-01T02:30:00Z,none,0 events

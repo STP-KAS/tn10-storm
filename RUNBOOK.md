@@ -1,6 +1,6 @@
 > Kaspa Testnet-10 only. Internal self-test, no Pulse. Fall-back guide for future runs.
 
-# RUNBOOK · every problem from a1 to a10 and how it was solved (a9 9/10, a10 7/10)
+# RUNBOOK · every problem from a1 to a14 and how it was solved
 
 Each entry: **symptom → cause → fix → how it was verified → commit.** Times are UTC. Details live in the ATTEMPT files under [`logs/selftest-2026-10-30/step3-base/`](logs/selftest-2026-10-30/step3-base/).
 
@@ -144,6 +144,9 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - Desk also logged one `Tcpip 4266` (UDP ephemeral ports all in use) at 16:38:28Z (one a day on 29, 30, 31 Oct); 61 UDP endpoints at 18:30Z, so not a leak by our senders. Watch only.
 - **Desk NIC settings (31 Oct 19:55 CET, stp "Full authority"):** read without admin: `*EEE` Energy Efficient Ethernet **Off** (0), `*IdleRestriction` Disabled (0), `PnPCapabilities` unset (Windows may power the card down; default). The agent session on the desk is not elevated, so "allow the computer to turn off this device" was **not** changed; nothing else changed, no driver update. To change it, stp in an admin shell: `Set-ItemProperty <adapter class key> PnPCapabilities 24` (takes effect after a disable/enable of the card), only before a run's START.
 - **a13 pre-launch (checklist 18):** desk `e2fnexpress` 27/32 last at 16:29Z (a12), none after.
+- **Planned NIC power-management fix (stp, admin PowerShell, 1 Nov 00:54–00:55 CET, during a14).** Set on the Intel I226-V: "allow the computer to turn off this device" = Disabled (`AllowComputerToTurnOffDevice`), Wake-on-LAN, ARP offload and NS offload off; adapter restarted. Desk log: `e2fnexpress` 27 → 32 at 23:54:11.8 → 23:54:14.5Z and 23:55:13.4 → 23:55:16.2Z, link back at 1 Gbps. Caused by us, not a home-network fault; scored with and without the window 23:54:11–23:55:26Z (ATTEMPT-a14).
+- **Read-only check after a14 (desk, agent session, not elevated, ~03:30 CET):** adapter Up, 1 Gbps, driver 2.1.5.7; advanced properties `*EEE` Off, `*IdleRestriction` Disabled, `*PMARPOffload` Disabled, `*PMNSOffload` Disabled, `*WakeOnMagicPacket` Disabled, `*WakeOnPattern` Disabled, `WakeOnMagicPacketFromS5` Enabled; registry `*SelectiveSuspend` = 0. **Could not confirm the turn-off setting:** `Get-NetAdapterPowerManagement` fails without admin ("A device attached to the system is not functioning"), `PnPCapabilities` is still unset in the adapter's class key, and WMI `MSPower_DeviceEnable` for the I226-V reads `Enable = True` (which normally means Windows may still turn it off). Confirm in an admin shell: `Get-NetAdapterPowerManagement -Name Ethernet`.
+- **After the fix:** no unplanned desk link drop from 23:55:16Z to the end of a14 recovery (02:05Z); 0 mini NCSI events.
 
 ## 16. a13 scored (7/10, 31 Oct): desk lane ran dry; landing floor
 - **Symptom:** `POOL_LOW sender=desk` from 21:05Z, desk pool 0 coins > 3 tKAS at 21:13:04Z, desk attempts drop from ≈ 11,500 to ≈ 570 per 10 min, 114 desk seconds without an attempt (criteria 2, 5); total rate 5.6 → 4.9 hops/s for the last 30 min.
@@ -151,6 +154,12 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - **Fix:** a14 desk `usable_min_tkas` 7,000 → 16,000 (`fund-lanes14.mjs`, funded to × 1.15, preflight checks it). Size each lane for the case where it wins the most it has won in any run, not the last run's share (checklist 19).
 - **Criterion 3:** 98.31 % with no outage and no freeze (108 of 112 gaps single seconds). Not caused by the desk pool (98.38 % in the 80 min before it ran dry). Rule unchanged.
 - **Network:** no desk link drop and no mini NCSI loss in a13 (checklist 18 check done after END too).
+
+## 17. a14 scored (6/10 strict, 9/10 without the planned NIC window, 1 Nov) and the 3× decision
+- **Desk funding fix verified:** desk `usable_min_tkas` 16,000: 0 `POOL_LOW`, desk pool 1,415 → 1,298 → 1,325 coins. The desk share swung to 2.76 % (a13 22.6 %), so lane shares are not stable run to run: keep funding each lane for its highest share seen (checklist 19).
+- **Criterion 3 floor:** 98.44 % (98.53 % outside the planned window), 88 single empty seconds, longest run 5 s. a7–a14: 99.28 / 99.49 / 99.32 / 98.85 / 98.92 / 98.66* / 98.31 / 98.53* %. **Proposed rule** (not adopted, wording of the 99 % rule unchanged): ≥ 98 % of seconds and no more than 5 s missed in a row. a14 passes it with and without the window.
+- **Decision (stp, 31 Oct 23:47 CET, "Ok go"):** after a14, whatever it scores, go to the 3× ladder (step 4: 4 families, 3× rate), not another 4-family rerun. a13/a14 are accepted as proof that the 1× setup is stable.
+- **Mini memory is the blocker for 3×:** free RAM 806 MB at a14 START, minimum 736 MB (23:46:14Z), below 1 GB for the first 12 min, then 1.3–2.0 GB; 1,957 MB at ~02:25Z. kaspad private grew 1.82 GB (restart 31 Oct 11:20Z) → 2.84 GB (11:58Z) → 7.86 GB (1 Nov ~02:25Z), commit 15.6 / 18.3 GB. a10 froze at about 1 GB free. The 3× step was **not launched**. Fix needs stp: OK a graceful mini kaspad restart (procedure in 13, same args, `--ram-scale 0.4`) right before the 3× launch; run step 4 with a mini RAM guard that stops the senders below 1 GB free.
 
 ## Launch checklist
 1. Admin/clock: `w32tm /stripchart … /samples:3` within ±20 ms; config `clock_gate: fail`, `clock_max_ms: 80`.
@@ -172,3 +181,4 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 18. Check both machines' network-card / NCSI events for the last hours before launch (RUNBOOK 15); if the desk link dropped, tell stp before starting.
 16. Check the mini's free memory before launch (a10: ≈ 1 GB free, kaspad 14 GB private) and tell stp if it is that low.
 19. Fund every lane for its highest share seen so far (a13: desk 22.6 % ⇒ desk ≥ 16,000 usable tKAS for 2 h), and re-check genesis keys (≥ 3 coins ≥ 15 tKAS; a13 left 1 each).
+20. Mini free RAM ≥ 2 GB at launch and a RAM guard for any run above 1× (a14: 736 MB at 1×); kaspad restarts only with stp's OK.
