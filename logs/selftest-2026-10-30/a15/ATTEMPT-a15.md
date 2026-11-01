@@ -31,3 +31,14 @@
 - Relaunch needs muon back (fresh genesis, new slot), or a decision to run step 4 on 3 lanes.
 
 - Relaunch check 09:21–09:22Z (scheduled): public muon node still down. 5 HTTP probes from the box timed out at 8 s with no answer and a WebSocket upgrade timed out at 10 s; boson answered every probe (101 on upgrade). No relaunch: running step 4 on 3 lanes is stp's call. Nothing started on desk or mini; kaspad untouched.
+
+## Second slot: 3 lanes, muon skipped (stp decision, 1 Nov 11:49 CET: "If down. Skip it.")
+- Muon public node still down at 10:50Z (no HTTP answer). **muon removed from `lanes` and `senders` in both run configs: lanes desk, mini, boson. Not comparable with a14 (4 lanes).** Families stay 4, rate 15, 30 min.
+- Mini (checklist 20): free RAM **2,354 MB** at 10:50Z (kaspad private 5.06 GB, up since the 07:52:58Z restart), 2,061 MB at 10:51Z after the run processes started. Clock +20.4 ms.
+- Desk preflight 10:50:43Z: desk 1,501 coins / 18,405 usable (min 16,000), mini 1,072 / 10,351 (9,000), boson 4,183 / 36,803 (32,000), all synced, RPC 21 / 5 / 79 ms, clock +0.7 ms. Desk NIC up at 1 Gbps, 0 `e2fnexpress` events in the last 10 h (the planned 23:54Z reset is just outside that window).
+- Sweep dry run and pre-START census 10:50Z: desk 0 own (1 in mempool), mini 0 own (1). The old desk leftover has left the mempool.
+- Launch: desk `desk-a11.ps1` 10:50:56Z, `GUARD_PRE exit=2 refused=1`, guard receiver health 200. Mini `mini-a8.ps1` 10:51Z, `PREFLIGHT_GENESIS exit=0`, RAM guard on 10:51:33Z (desk health 200).
+- Tag s3a15b. **Family check 11:05Z, START 11:15:00Z (12:15 CET), END 11:45:00Z (12:45 CET)**, recovery to 12:05Z.
+
+## Result
+Pending (scoring routine after END + 20 min).
