@@ -42,3 +42,9 @@ Direction: Saturday's Pulse rerun has only the desk sending. a16 rehearses it. *
 - All 8 families `FAMILY_DROP reason=build`: the builder only accepts launch paths starting `launch::storm-2026-10-` (allow-list in `storm.rs`); the new `…2026-11-02…` paths were refused. `LAUNCH_ABORT reason=genesis`, STOP written, run processes stopped. Nothing sent; kaspad untouched.
 - Fix: launch paths `launch::storm-2026-10-30-s3a16b-fN` (no rebuild). Fresh run dir `step3-a16b`, same plan shifted +15 min.
 - **New slot: family check 19:20Z, START 19:30:00Z (20:30 CET), END 20:20:00Z (21:20 CET)**, recovery to 20:40Z. Steps: f1 19:30–19:38, f2 19:40–19:48, f4 19:50–19:58, f8 20:00–20:08, ramp 20:10–20:20Z (rates 5/6/8/10/12, 2 min each, 4 families). Desk `desk-solo.ps1` re-armed 19:07:09Z; mini counter restarted 19:07:24Z (runs to 20:45Z).
+
+### a16b: genesis done, then postponed to 3 Nov at stp's call (no hop sent)
+- 19:19:55–19:20:00Z: all 8 families `GENESIS included` (launch-path fix worked), desk `PREFLIGHT exit=0`, sender armed 19:20:00Z. Mini counter on, free RAM 1,165–1,768 MB, no trip.
+- **stp, 2 Nov 20:29 CET: "we test tomorrow, not tonight."** Stopped cleanly before START: `control/STOP` written 19:29:11Z (coordinator logged its STOP; its `START` token in the same second is the loop exit, not a run), then the orchestrator, sender, broker, coordinator and post-end watcher were stopped by hand at 19:29:16Z; mini counter stopped. **0 hop attempts** (`submit-desk` empty). Only the 8 genesis txs went on chain.
+- kaspad untouched on both machines; the desk devnet untouched.
+- Relaunch on 3 Nov: fresh run dir and launch paths (`launch::storm-2026-10-30-…`), re-check sync with `synccheck.mjs`, mini free RAM, clocks and desk funds (1,520 coins / 18,408 usable tKAS before genesis).
