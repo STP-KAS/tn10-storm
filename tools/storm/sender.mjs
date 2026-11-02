@@ -137,7 +137,7 @@ while (true) {
   const now = Date.now();
   if (now >= END || fs.existsSync(STOPF)) break;
   const s = stepAt(now); const dt = (now - last) / 1000; last = now;
-  const on = s && s.step !== "gap" && alive && !skipped && !dropped;
+  const on = s && s.step !== "gap" && !fs.existsSync(P("control", "SKIP-" + s.step)) && alive && !skipped && !dropped;   // 2 Nov a16: gate / ramp early stop
   for (const f of CFG.families) {
     const fam = f.family;
     if (!on || fam > s.families) { bucket.set(fam, 0); continue; }

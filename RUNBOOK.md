@@ -206,3 +206,20 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 19. Fund every lane for its highest share seen so far (a13: desk 22.6 % ⇒ desk ≥ 16,000 usable tKAS for 2 h), and re-check genesis keys (≥ 3 coins ≥ 15 tKAS; a13 left 1 each).
 20. Mini free RAM ≥ 2 GB at launch and a RAM guard for any run above 1× (a14: 736 MB at 1×); kaspad restarts only with stp's OK.
 21. Stop the desk RAM-guard receiver (port 18601) after recovery if the orchestrator has not (a15: still running after `RECOVERY_DONE`).
+
+## 21. Desk-only scoring: the 10 criteria adapted to one lane (stp, 2 Nov, before a16)
+
+Desk = the single sending lane. The mini counter (`counter.cjs`, own kaspad, read-only) is the independent recount and gives the submit→acceptance time (desk `private/submit-desk.jsonl` ts joined with mini `private/accepted.jsonl` t by txid; joins stay private). Counted steps: f1, f2, f4, f8 (only if the f4 gate passed), ramp steps actually run. Gaps are not counted.
+
+1. **Preflight**: desk + mini synced, DAA within 5 of boson, ≥ 4 peers; clock offset |x| ≤ 100 ms on desk, mini and box; family ids written to a private file; miner lines captured (desk + mini); mini free RAM ≥ 2 GB at arm.
+2. **On from the first second** (Pulse 1): in every counted step the desk's first submit is within 1 s of the step start, and every second of the step has ≥ 1 submit attempt.
+3. **One held rate** (Pulse 2): each step's achieved submits per family per s ≥ 95 % of its configured rate across the full window (no throttling, no POOL_LOW).
+4. **Landing**: ≥ 99 % of counted seconds have ≥ 1 accepted own hop (coordinator seen time).
+5. **Every family moves**: no active family goes > 30 s without an accepted hop.
+6. **No faults**: 0 SENDER_OFF / NODE_DROP / PROC_EXIT; desk kaspad and devnet untouched (same pids before/after).
+7. **Submit health**: desk submit ok ratio ≥ 99 %, rpc_ms p99 < 1000 ms.
+8. **Independent recount**: mini-counted own accepted txs within 1 % of the coordinator's count for the counted window.
+9. **Clean end**: 0 own new mempool txs at END+10 min on desk and mini.
+10. **Latency + ramp** (Pulse 3 + 4): submit→acceptance measured for ≥ 99 % of accepted own txs (p50/p95 reported), and the ramp ran to 12/s or stopped by the rule (2 consecutive rate steps with < 3 % gain in acceptance per family).
+
+Gates (automatic, `gate.mjs`): f8 runs only if f4 was clean (landing ≥ 99 %, all 4 families landed, no fault events), else `control/SKIP-f8`; ramp writes `SKIP-<later steps>` after 2 consecutive < 3 % gains. A skipped f8 is not a failure of 4/6 but caps the run below a full GO (logged). Cap: a16–a20; stop at 10/10.

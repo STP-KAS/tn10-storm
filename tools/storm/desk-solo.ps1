@@ -16,9 +16,16 @@ while ($true) { $n = (sls -Path "$Run\logs\phase.log" -Pattern ' (GENESIS|FAMILY
 if ((sls -Path "$Run\logs\phase.log" -Pattern 'FAMILY_DROP' -Quiet) -or $c.HasExited) { & $ph "LAUNCH_ABORT reason=genesis"; New-Item "$Run\control\STOP" -Force | Out-Null; exit 3 }
 & node "$Kit\preflight.mjs" *> "$Run\out\preflight.txt"; & $ph "PREFLIGHT exit=$LASTEXITCODE"
 if ($LASTEXITCODE -ne 0) { & $ph "LAUNCH_ABORT reason=preflight"; New-Item "$Run\control\STOP" -Force | Out-Null; exit 4 }
+# 2 Nov gap fix c: family ids to a private file, desk miner lines, desk clock offset (mini + box are checked by the operator before arming)
+sls -Path "$Run\private\genesis.log" -Pattern 'family=(\d+).*covenant=(\S+)' | % { "family=$($_.Matches[0].Groups[1].Value) covenant=$($_.Matches[0].Groups[2].Value)" } | Set-Content "$Run\private\family-ids.txt"
+& $ph "FAMILY_IDS n=$((gc "$Run\private\family-ids.txt" | measure).Count) file=private"
+$mn = @(Get-Process -ea 0 | ? { $_.Name -match 'miner' }); & $ph "MINERS desk n=$($mn.Count) $(($mn | % { "$($_.Name):$($_.Id)" }) -join ',')"
+$w = (w32tm /stripchart /computer:time.cloudflare.com /samples:3 /dataonly 2>&1 | sls '([+-][\d.]+)s' | % { [double]$_.Matches[0].Groups[1].Value }) ; & $ph "CLOCK desk offsets_s=$($w -join ',')"
+if (($w | ? { [math]::Abs($_) -gt 0.1 }).Count -gt 0) { & $ph "LAUNCH_ABORT reason=clock"; New-Item "$Run\control\STOP" -Force | Out-Null; exit 5 }
 $env:STORM_BUILDER_DIRECT = '1'; $env:STORM_ROOT = Join-Path $BuilderRoots 'desk'
 $p = Start-Process node -ArgumentList "sender.mjs --label desk --source self --node ws://127.0.0.1:17210 --key $($cfg.lanes.desk.key)" @s -RedirectStandardOutput "$Run\out\sender-desk.out" -RedirectStandardError "$Run\out\sender-desk.err"
 & $ph "SENDER desk pid=$($p.Id)"
+$gt = Start-Process node -ArgumentList "gate.mjs" @s -RedirectStandardOutput "$Run\out\gate.out" -RedirectStandardError "$Run\out\gate.err"; & $ph "GATE pid=$($gt.Id)"   # 2 Nov gap fixes a + b
 while ([DateTime]::UtcNow -lt $T0) { Start-Sleep -Milliseconds 200 }
 & $ph "START senders=desk families=$($cfg.families.Count) steps=$($cfg.schedule.Count)"
 while ([DateTime]::UtcNow -lt $END) { Start-Sleep 1; if ($p.HasExited) { & $ph "PROC_EXIT sender before_end"; break } }
