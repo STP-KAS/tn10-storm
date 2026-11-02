@@ -180,6 +180,8 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 
 - Launch paths must start `launch::storm-2026-10-` (builder allow-list); a16's first slot dropped all families on `reason=build`.
 - Report node PIDs only from a live read in the same step; a node can stop between check and report (a16: mini kaspad stopped 19:30Z, 1 min after our last check).
+- **Mini kaspad died twice on 2 Nov evening, abruptly:** pid 15852 after `19:30:20.9Z` (last log line) and stp's restart pid 6820 (started 19:30:22Z) after `19:35:28.5Z`. Both logs end mid-relay with no shutdown line, nothing in the error log after the ignored `Shutdown RPC … safe RPC mode` at 19:29:35Z, and no Application/System event 19:25–19:47Z. That pattern (no crash event, no shutdown) fits the process being killed with its parent console/shell, not a kaspad crash; the exact parent could not be recovered. stp's 19:30Z restart started from a console/shell session (it lived 5 min).
+- **Fix (stp OK 2 Nov 20:45 CET):** the mini kaspad now runs from a user-level scheduled task `stp-mini-tn10-kaspad` (medium integrity, no time limit) that runs the unchanged `start-kaspad.cmd`, so it does not belong to any shell. Started 19:46:31Z; alive at +2 and +5 min, synced, DAA 0–1 behind boson, 8 peers, mini free RAM 5.7–5.8 GB. Restart it with `Start-ScheduledTask stp-mini-tn10-kaspad`, never from an agent shell.
 - Desk-only runs: `tools/storm/desk-solo.ps1` (desk genesis + sole sender), mini `counter.cjs` (read-only acceptance log, stops under 1 GB free), `synccheck.mjs` before START (both nodes synced, DAA within a few of a public node, peers).
 
 ## Launch checklist
