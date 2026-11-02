@@ -179,6 +179,7 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - Verify which machine is which from the machine itself (NIC model, kaspad uacomment), not from agent labels.
 
 - Launch paths must start `launch::storm-2026-10-` (builder allow-list); a16's first slot dropped all families on `reason=build`.
+- Report node PIDs only from a live read in the same step; a node can stop between check and report (a16: mini kaspad stopped 19:30Z, 1 min after our last check).
 - Desk-only runs: `tools/storm/desk-solo.ps1` (desk genesis + sole sender), mini `counter.cjs` (read-only acceptance log, stops under 1 GB free), `synccheck.mjs` before START (both nodes synced, DAA within a few of a public node, peers).
 
 ## Launch checklist
