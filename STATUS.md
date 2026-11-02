@@ -18,6 +18,9 @@
 | a13 (2 h) | 7/10 | 5.48 | 2, 5: desk lane out of coins from 21:13Z (desk landed 22.6 %, twice a12's share); 3: landing 98.31 % (single empty seconds, no outage). 9 passed (0 new own tx) |
 | a15 (30 min, 3×, 3 lanes) | **9/10** (also 9/10 under the proposed rule) | 6.13 | 3: landing 97.50 % (36 single empty seconds + one 5 s and one 4 s gap; no outage, no freeze). 3× rate gave only ≈ +10 % hops (contention ≈ 90 %). RAM guard not tripped (mini min 1,661 MB free). Muon skipped (stp): **not comparable with a14** ([ATTEMPT-a15](logs/selftest-2026-10-30/a15/ATTEMPT-a15.md)) |
 | a14 (2 h) | 6/10 strict · **9/10 without the planned NIC window** · 10/10 under the proposed landing rule without it | **5.57** | 2, 5, 6: stp's planned desk NIC power-management fix + adapter restart (23:54:11–23:55:26Z, 15 lane-seconds, 441 rpc rejects, all in the window); 3: landing 98.44 % (98.53 % outside the window, 88 single empty seconds, longest 5 s). Desk funding fix held (0 POOL_LOW), 9 passed (0 new own tx) |
+| a16 (desk-only, 50 min) | 7/10 | — | 3: 5/s per family cannot be held (one chain ~1.5 hops/s); 4: landing 95.6–98.3 %; 7: ok ratio 30 % from over-driving. f8 gated off |
+| a17 (desk-only, 50 min, 1.2/s per family) | 7/10 | — | 2: 467–471 of 480 s attempted; 4: landing 96.9–97.7 %, families phase-locked (f4: 579 of 707 accepting blocks carried all 4); 7: ok ratio 97.55 %. f8 gated off. [SCORE](logs/selftest-2026-10-30/a17/SCORE-a17.md) |
+| a18 (desk-only, armed) | — | — | START 00:00Z 3 Nov (01:00 CET), END 00:50Z; sender de-lock fix (stagger on collision) |
 
 a6 (15:00–15:30Z): no freeze. 3 phantom tips, each recovered in ~5.4 s. 843 `UNACCEPT`, 0 `STALL`. Landing seconds 99.22 %, node RPC p95 4 / 2 ms. `RECOUNT_OK rows=4` (7,732 vs hop log 7,734). [ATTEMPT-a6](logs/selftest-2026-10-30/step3-base/ATTEMPT-a6.md) · [REVIEW](logs/selftest-2026-10-30/step3-base/REVIEW.md)
 

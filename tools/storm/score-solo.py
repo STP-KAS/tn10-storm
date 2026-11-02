@@ -46,6 +46,9 @@ HW=[x for x in hops if any(T(s['from'])<=x['_t']<T(s['to']) for s in steps)]
 mini=sum(1 for x in HW if x['txid'] in accT)
 res[8]=len(HW)>0 and abs(mini-len(HW))/len(HW)<=0.01
 c9=[l for l in ph if 'CRIT9' in l]; res[9]=len(c9)==2 and all(('ours_new=0' in l) or ('ours=0 ' in l) for l in c9)
+# 3 Nov (a17): the desk CRIT9 line can come out empty (stdout parse); the census file logs/mempool-ours.jsonl is the source of truth
+mo=jl('mempool-ours.jsonl'); last={m['label']:m for m in mo}
+if {'desk','mini'}<=set(last): res[9]=all(last[n]['snap1'].get('ours',1)==0 for n in ('desk','mini'))
 subT={x['txid']:x['_t'] for x in sub if x.get('result')=='ok'}
 lat=[accT[t]-subT[t] for t in (x['txid'] for x in HW) if t in accT and t in subT]
 ramp_ok=bool(stop) or not any(s['step'].startswith('ramp') and s['step'] in skipped for s in cfg['schedule'])

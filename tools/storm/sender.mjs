@@ -133,6 +133,7 @@ function tipChanged(fam) {
   const k = `${f.st.seq}:${f.st.txid}`; if (tipKey.get(fam) === k) return false; tipKey.set(fam, k); return true;
 }
 const bucket = new Map(), skipT = new Map(), SKIP_MS = Number(CFG.skip_ms || 250); let last = Date.now();
+const STAG = Number(CFG.stagger_ms || 0), LOCK_MS = Number(CFG.lock_ms || 150), PEND = new Set(), seenAt = new Map(); let delayed = 0;   // 3 Nov a18 de-lock
 while (true) {
   const now = Date.now();
   if (now >= END || fs.existsSync(STOPF)) break;
@@ -141,7 +142,18 @@ while (true) {
   for (const f of CFG.families) {
     const fam = f.family;
     if (!on || fam > s.families) { bucket.set(fam, 0); continue; }
-    if (FIRE && SOURCE === "self" && tipChanged(fam) && !busy(fam)) { FIRING.add(fam); attempt(fam).catch(() => {}).finally(() => FIRING.delete(fam)); bucket.set(fam, Math.max(-1, (bucket.get(fam) || 0) - 1)); }
+    if (PEND.has(fam)) continue;   // 3 Nov a18: a de-lock delay is pending for this family; no tick on the same tip meanwhile
+    if (FIRE && SOURCE === "self" && tipChanged(fam) && !busy(fam)) {
+      // 3 Nov a18 de-lock: a17 showed the families phase-locked (f4: 579 of 707 accepting blocks carried all 4 families), so
+      // they all missed the same seconds. If lower-numbered active families saw their new tip within LOCK_MS of this one,
+      // delay this family's fire by k * (stagger_ms / families). Only on a collision, so free-running families keep full speed.
+      const k = STAG > 0 ? CFG.families.filter((g) => g.family < fam && g.family <= s.families && now - (seenAt.get(g.family) || 0) <= LOCK_MS).length : 0;
+      seenAt.set(fam, now);
+      const d = k > 0 ? Math.round(k * STAG / s.families) : 0;
+      FIRING.add(fam); bucket.set(fam, Math.max(-1, (bucket.get(fam) || 0) - 1));
+      const go = () => { PEND.delete(fam); attempt(fam).catch(() => {}).finally(() => FIRING.delete(fam)); };
+      if (d > 0) { PEND.add(fam); delayed++; setTimeout(go, d); continue; } else go();
+    }
     let b = Math.min((bucket.get(fam) || 0) + s.rate * dt, Math.max(1, s.rate * 0.2));
     if (SOURCE === "self" && busy(fam)) { const t = skipT.get(fam) || now; skipT.set(fam, t); if (now - t < SKIP_MS) { bucket.set(fam, b); continue; } } else skipT.delete(fam);   // at most 250 ms, then attempt on the cached tip
     while (b >= 1) { b -= 1; attempt(fam).catch((e) => { console.error("attempt", e.message); LOG.write(JSON.stringify({ ts: iso(), sender: LABEL, node: LABEL, family: fam, txid: "", result: "error", reason: "pre_submit", err: String(e?.message || e).replace(/[0-9a-f]{64}/g, "<h>").slice(0, 200) }) + "\n"); }); }   // 30 Oct a3: count pre-submit errors
@@ -149,4 +161,5 @@ while (true) {
   }
   await sleep(20);
 }
+if (STAG > 0) phase(`DELOCK sender=${LABEL} delayed_fires=${delayed} stagger_ms=${STAG} lock_ms=${LOCK_MS}`);
 await sleep(3000); LOG.end(); try { await B.ask("quit", 3000); } catch {} await rpc.disconnect().catch(() => {}); process.exit(0);
