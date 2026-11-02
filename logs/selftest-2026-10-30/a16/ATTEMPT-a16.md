@@ -37,3 +37,8 @@ Direction: Saturday's Pulse rerun has only the desk sending. a16 rehearses it. *
 - Family check (genesis) 19:05Z, **START 19:15:00Z (20:15 CET), END 20:05:00Z (21:05 CET)**, recovery to 20:25Z.
 - Per-tx submit time: desk `private/submit-desk.jsonl` (already logged by `sender.mjs`); acceptance: desk coordinator `private/hops.jsonl` and the mini counter `private/accepted.jsonl`. Both private, never in git; only counts and latency percentiles get published.
 - Launch: mini counter 18:52:02Z (`COUNTER_ON`), desk `desk-solo.ps1` (pwsh 7, detached) 18:52:28Z `SOLO_ARMED`.
+
+### First slot aborted at genesis (19:04:55Z), no hop sent
+- All 8 families `FAMILY_DROP reason=build`: the builder only accepts launch paths starting `launch::storm-2026-10-` (allow-list in `storm.rs`); the new `…2026-11-02…` paths were refused. `LAUNCH_ABORT reason=genesis`, STOP written, run processes stopped. Nothing sent; kaspad untouched.
+- Fix: launch paths `launch::storm-2026-10-30-s3a16b-fN` (no rebuild). Fresh run dir `step3-a16b`, same plan shifted +15 min.
+- **New slot: family check 19:20Z, START 19:30:00Z (20:30 CET), END 20:20:00Z (21:20 CET)**, recovery to 20:40Z. Steps: f1 19:30–19:38, f2 19:40–19:48, f4 19:50–19:58, f8 20:00–20:08, ramp 20:10–20:20Z (rates 5/6/8/10/12, 2 min each, 4 families). Desk `desk-solo.ps1` re-armed 19:07:09Z; mini counter restarted 19:07:24Z (runs to 20:45Z).

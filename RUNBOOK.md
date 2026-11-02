@@ -178,6 +178,9 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - Mini kaspad private memory regrows to ~7.9 GB within ~34 h of a restart (free RAM 1,668 MB). Expect a kaspad restart (stp OK) before any run when the restart is older than ~1 day.
 - Verify which machine is which from the machine itself (NIC model, kaspad uacomment), not from agent labels.
 
+- Launch paths must start `launch::storm-2026-10-` (builder allow-list); a16's first slot dropped all families on `reason=build`.
+- Desk-only runs: `tools/storm/desk-solo.ps1` (desk genesis + sole sender), mini `counter.cjs` (read-only acceptance log, stops under 1 GB free), `synccheck.mjs` before START (both nodes synced, DAA within a few of a public node, peers).
+
 ## Launch checklist
 1. Admin/clock: `w32tm /stripchart … /samples:3` within ±20 ms; config `clock_gate: fail`, `clock_max_ms: 80`.
 2. Orchestrators started with **pwsh 7**, **detached** (`Start-Process`), never from an agent shell that can be cut off.
