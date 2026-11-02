@@ -2,7 +2,7 @@
 >
 > **Part of [tn-master](https://github.com/STP-KAS/tn-master)**, the map of every TN10 storm. Named by the [11 Oct naming rule](https://github.com/STP-KAS/tn-master/blob/main/repos/INDEX.md): `tn10-storm-YYYY-MM-DD`.
 
-# tn10-storm-2026-10-30 · internal self-test before any Pulse rerun
+# tn10-storm · internal TN10 self-test before any Pulse rerun (was tn10-storm-2026-10-30, renamed 2 Nov 2026)
 
 **Goal:** a clean internal pass, end to end, before asking Pulse for a rerun. No Pulse involvement in this test.
 
