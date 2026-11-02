@@ -173,6 +173,11 @@ Verified: stripchart −0.162 s at 16:46Z (after the first three steps alone), *
 - **Leftover process:** the desk RAM-guard receiver (`ram-guard-recv.mjs`, port 18601) kept running after `RECOVERY_DONE` and held `out/ram-guard-recv.err` open (the log zip failed on the locked file; copy the run dir first, then zip). Stopped by hand at scoring. Fix for the next run: the desk orchestrator stops the receiver at recovery end.
 - The mini NCSI log can show entries with an invalid timestamp (year 2096); use the run's peer and `SENDER_OFF` rows to judge network loss instead.
 
+## 20. a16 not run (2 Nov): usage outage and LAN switch
+- Agent usage ran out 1 Nov ~13:00Z; the prepared a16 was never armed. On 2 Nov ~18:30Z the home LAN switch was unplugged by accident (desk NIC event, link back at 1 Gbps). New outage cause: **physical LAN switch**; check the switch before every long run.
+- Mini kaspad private memory regrows to ~7.9 GB within ~34 h of a restart (free RAM 1,668 MB). Expect a kaspad restart (stp OK) before any run when the restart is older than ~1 day.
+- Verify which machine is which from the machine itself (NIC model, kaspad uacomment), not from agent labels.
+
 ## Launch checklist
 1. Admin/clock: `w32tm /stripchart … /samples:3` within ±20 ms; config `clock_gate: fail`, `clock_max_ms: 80`.
 2. Orchestrators started with **pwsh 7**, **detached** (`Start-Process`), never from an agent shell that can be cut off.
