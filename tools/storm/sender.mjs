@@ -133,6 +133,7 @@ function tipChanged(fam) {
   const k = `${f.st.seq}:${f.st.txid}`; if (tipKey.get(fam) === k) return false; tipKey.set(fam, k); return true;
 }
 const bucket = new Map(), skipT = new Map(), SKIP_MS = Number(CFG.skip_ms || 250); let last = Date.now();
+const HB_MS = Number(CFG.heartbeat_ms || 0), lastAtt = new Map(); let hbs = 0;   // 3 Nov a22
 const STAG = Number(CFG.stagger_ms || 0), LOCK_MS = Number(CFG.lock_ms || 150), PEND = new Set(), seenAt = new Map(); let delayed = 0;   // 3 Nov a18 de-lock
 while (true) {
   const now = Date.now();
@@ -151,15 +152,21 @@ while (true) {
       seenAt.set(fam, now);
       const d = k > 0 ? Math.round(k * STAG / s.families) : 0;
       FIRING.add(fam); bucket.set(fam, Math.max(-1, (bucket.get(fam) || 0) - 1));
+      lastAtt.set(fam, now);
       const go = () => { PEND.delete(fam); attempt(fam).catch(() => {}).finally(() => FIRING.delete(fam)); };
       if (d > 0) { PEND.add(fam); delayed++; setTimeout(go, d); continue; } else go();
     }
     let b = Math.min((bucket.get(fam) || 0) + s.rate * dt, Math.max(1, s.rate * 0.2));
     if (SOURCE === "self" && busy(fam)) { const t = skipT.get(fam) || now; skipT.set(fam, t); if (now - t < SKIP_MS) { bucket.set(fam, b); continue; } } else skipT.delete(fam);   // at most 250 ms, then attempt on the cached tip
+    // 3 Nov a22 heartbeat (crit 2): a21 f1 had 48 empty seconds, every one right after an ok fire-on-tip (bucket debited to -1 -> next tick 1.67 s
+    // at 1.2/s) while daytime acceptance took > 1 s. If this family has had no attempt for HB_MS, attempt now on the cached tip. Off when heartbeat_ms = 0.
+    if (HB_MS > 0 && b < 1 && !FIRING.has(fam) && now - (lastAtt.get(fam) || 0) >= HB_MS) { b = 1; hbs++; }
+    if (b >= 1) lastAtt.set(fam, now);
     while (b >= 1) { b -= 1; attempt(fam).catch((e) => { console.error("attempt", e.message); LOG.write(JSON.stringify({ ts: iso(), sender: LABEL, node: LABEL, family: fam, txid: "", result: "error", reason: "pre_submit", err: String(e?.message || e).replace(/[0-9a-f]{64}/g, "<h>").slice(0, 200) }) + "\n"); }); }   // 30 Oct a3: count pre-submit errors
     bucket.set(fam, b);
   }
   await sleep(20);
 }
+if (HB_MS > 0) phase(`HEARTBEAT sender=${LABEL} heartbeat_ms=${HB_MS} beats=${hbs}`);
 if (STAG > 0) phase(`DELOCK sender=${LABEL} delayed_fires=${delayed} stagger_ms=${STAG} lock_ms=${LOCK_MS}`);
 await sleep(3000); LOG.end(); try { await B.ask("quit", 3000); } catch {} await rpc.disconnect().catch(() => {}); process.exit(0);
