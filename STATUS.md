@@ -20,7 +20,7 @@
 | a14 (2 h) | 6/10 strict · **9/10 without the planned NIC window** · 10/10 under the proposed landing rule without it | **5.57** | 2, 5, 6: stp's planned desk NIC power-management fix + adapter restart (23:54:11–23:55:26Z, 15 lane-seconds, 441 rpc rejects, all in the window); 3: landing 98.44 % (98.53 % outside the window, 88 single empty seconds, longest 5 s). Desk funding fix held (0 POOL_LOW), 9 passed (0 new own tx) |
 | a16 (desk-only, 50 min) | 7/10 | — | 3: 5/s per family cannot be held (one chain ~1.5 hops/s); 4: landing 95.6–98.3 %; 7: ok ratio 30 % from over-driving. f8 gated off |
 | a17 (desk-only, 50 min, 1.2/s per family) | 7/10 | — | 2: 467–471 of 480 s attempted; 4: landing 96.9–97.7 %, families phase-locked (f4: 579 of 707 accepting blocks carried all 4); 7: ok ratio 97.55 %. f8 gated off. [SCORE](logs/selftest-2026-10-30/a17/SCORE-a17.md) |
-| a18 (desk-only, armed) | — | — | START 00:00Z 3 Nov (01:00 CET), END 00:50Z; sender de-lock fix (stagger on collision) |
+| a18 (desk-only, 50 min, de-lock) | 6/10 | — | De-lock worked (f4 all-four blocks 579/707 → 129/842; union f4 98.33 %, ramp 99.17–100 %) but cost rate: 3: f4 1.07/s; 2: f1 463/480; 4: f1 95.83, f2 97.29, f4 98.33; 7: ok 97.16 %. a19 waits for stp (f1 criteria). [SCORE](logs/selftest-2026-10-30/a18/SCORE-a18.md) |
 
 a6 (15:00–15:30Z): no freeze. 3 phantom tips, each recovered in ~5.4 s. 843 `UNACCEPT`, 0 `STALL`. Landing seconds 99.22 %, node RPC p95 4 / 2 ms. `RECOUNT_OK rows=4` (7,732 vs hop log 7,734). [ATTEMPT-a6](logs/selftest-2026-10-30/step3-base/ATTEMPT-a6.md) · [REVIEW](logs/selftest-2026-10-30/step3-base/REVIEW.md)
 
