@@ -21,6 +21,9 @@
 | a16 (desk-only, 50 min) | 7/10 | — | 3: 5/s per family cannot be held (one chain ~1.5 hops/s); 4: landing 95.6–98.3 %; 7: ok ratio 30 % from over-driving. f8 gated off |
 | a17 (desk-only, 50 min, 1.2/s per family) | 7/10 | — | 2: 467–471 of 480 s attempted; 4: landing 96.9–97.7 %, families phase-locked (f4: 579 of 707 accepting blocks carried all 4); 7: ok ratio 97.55 %. f8 gated off. [SCORE](logs/selftest-2026-10-30/a17/SCORE-a17.md) |
 | a18 (desk-only, 50 min, de-lock) | 6/10 | — | De-lock worked (f4 all-four blocks 579/707 → 129/842; union f4 98.33 %, ramp 99.17–100 %) but cost rate: 3: f4 1.07/s; 2: f1 463/480; 4: f1 95.83, f2 97.29, f4 98.33; 7: ok 97.16 %. a19 waits for stp (f1 criteria). [SCORE](logs/selftest-2026-10-30/a18/SCORE-a18.md) |
+| a19–a21 (desk-only rehearsals 1–3) | 7/10 each | — | 2, 3, 4: latency ~1.0 s (see SCORE-a21) |
+| a22 (desk-only, evening, heartbeat 900 ms) | 7/10 | — | 2: f4 479/480 (f1/f2 fixed by heartbeat); 3: 0.83–0.95; 4: union 90.64 %. Evening latency the same as daytime: time of day refuted; ~80 % of the cycle is desk → network relay (desk peers all reconnected 3 Nov 08:00 CET). [SCORE](logs/selftest-2026-10-30/a22/SCORE-a22.md) |
+| a23 (armed, 02:10–03:00 CET 4 Nov) | — | — | one change: every ok hop also submitted to boson (multi-entry relay). [ARMED](logs/selftest-2026-10-30/a23/ARMED-a23.md) |
 
 a6 (15:00–15:30Z): no freeze. 3 phantom tips, each recovered in ~5.4 s. 843 `UNACCEPT`, 0 `STALL`. Landing seconds 99.22 %, node RPC p95 4 / 2 ms. `RECOUNT_OK rows=4` (7,732 vs hop log 7,734). [ATTEMPT-a6](logs/selftest-2026-10-30/step3-base/ATTEMPT-a6.md) · [REVIEW](logs/selftest-2026-10-30/step3-base/REVIEW.md)
 

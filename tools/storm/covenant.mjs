@@ -93,7 +93,7 @@ export function keyAddress(i) {
 export async function buildHop(B, st, coin, key, nonce) {
   const r = await B.run(st, `hop ${key} ${coin.txid} ${coin.index} ${coin.amount} ${nonce}`);
   const tx = materialize(r.tx); if (norm(tx.id) !== norm(r.txid)) throw new Error("hop id mismatch");
-  return { tx, txid: norm(r.txid), nextSpk: r.nextSpk, compute: r.compute, fee: r.fee };
+  return { tx, raw: r.tx, txid: norm(r.txid), nextSpk: r.nextSpk, compute: r.compute, fee: r.fee };   // 4 Nov a23: raw kept so a relay submits its own fresh wasm copy
 }
 
 // Follower: given the current state, the next minter lands at a known address. Returns the next state or null.

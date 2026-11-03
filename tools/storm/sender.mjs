@@ -9,7 +9,7 @@ for (const k of ["error", "warn"]) { const o = console[k].bind(console); console
 process.on("uncaughtException", (e) => { console.error("uncaught", e?.stack || e); process.exit(1); });
 process.on("unhandledRejection", (e) => console.error("unhandled", String(e?.message || e)));
 import { CFG, P, phase, iso, sleep, to, stepAt, END, STOPF, reason, connect, readState, writeState, arg } from "./lib.mjs";
-import { startBuilder, buildHop, catchUp, Pool, keyAddress, probeBack } from "./covenant.mjs";
+import { startBuilder, buildHop, catchUp, Pool, keyAddress, probeBack, materialize } from "./covenant.mjs";
 const CATCHUP_MS = Number(CFG.catchup_ms || 2000);   // 30 Oct a5: catch-up cap
 
 const LABEL = arg("label"), URL = arg("node"), SOURCE = arg("source", "coord");
@@ -18,6 +18,21 @@ const KEY = Number(arg("key", CFG.sender_key ?? 0));
 const LOG = fs.createWriteStream(P("private", `submit-${LABEL}.jsonl`), { flags: "a" });
 const CLOG = fs.createWriteStream(P("private", `catchup-${LABEL}.jsonl`), { flags: "a" });   // 30 Oct a5: catch-up timeouts/errors, kept out of the submit log
 const rpc = await connect(URL);
+// 4 Nov a23 multi-entry relay: a22 capture showed desk submit -> mini mempool first-seen p50 ~0.8 s but mini first-seen -> accepting
+// header only ~0.18 s, i.e. the time is spent relaying from the desk's 8 outbound peers (desk listens on 127.0.0.1 only, no inbound).
+// After the desk node returns ok, the SAME signed tx is also submitted to each relay_urls node (public TN10 wRPC), so it enters the
+// network at a second, better-connected point. Only ok txs are relayed (no conflicting copy can exist). Relay results go to
+// private/relay-<label>.jsonl and never change the desk row, the bucket or the fire logic. A dead relay is skipped (RELAY_OFF), not a fault.
+const RELAYS = [];
+for (const u of (CFG.relay_urls || [])) { try { RELAYS.push({ u, host: u.split("/")[2], c: await connect(u, 3), bad: 0 }); phase(`RELAY_ON sender=${LABEL} relay=${u.split("/")[2]}`); } catch (e) { phase(`RELAY_OFF sender=${LABEL} relay=${u.split("/")[2]} reason=connect`); } }
+const RLOG = RELAYS.length ? fs.createWriteStream(P("private", `relay-${LABEL}.jsonl`), { flags: "a" }) : null;
+let relayN = 0, relayOk = 0;
+function relay(raw, txid, fam) {
+  for (const r of RELAYS) { const t0 = Date.now(); relayN++; let tx; try { tx = materialize(raw); } catch { continue; }
+    to(r.c.submitTransaction({ transaction: tx, allowOrphan: false }), 3000, "relay")
+      .then(() => { relayOk++; RLOG.write(JSON.stringify({ ts: iso(), relay: r.host, family: fam, txid, result: "ok", rpc_ms: Date.now() - t0 }) + "\n"); })
+      .catch((e) => { RLOG.write(JSON.stringify({ ts: iso(), relay: r.host, family: fam, txid, result: "rejected", reason: reason(e), rpc_ms: Date.now() - t0 }) + "\n"); }); }
+}
 const B = startBuilder(P("private", `builder-${LABEL}.err`));
 await B.ask("ping", 120000);
 const addr = keyAddress(KEY);
@@ -115,6 +130,7 @@ async function attempt1(fam) {
   catch (e) { result = "rejected"; why = reason(e); err = String(e?.message || e).replace(/\s+/g, " ").slice(0, 600); }
   const row = { ts, sender: LABEL, node: LABEL, family: fam, txid: h.txid, result, reason: why, source: SOURCE, rpc_ms: Date.now() - t0, build_ms, tip_seq: st.seq || 0, catchup_ms: fam$.get(fam)?.catchup_ms ?? 0, tip_age_ms: st.live_utc ? Date.now() - Date.parse(st.live_utc) : null, fire: FIRING.has(fam) ? 1 : 0, q: inflight, bq: B.depth ? B.depth() : 0 }; if (err) row.err = err;
   LOG.write(JSON.stringify(row) + "\n");
+  if (result === "ok" && RELAYS.length) relay(h.raw, h.txid, fam);   // 4 Nov a23
   if (++shapeTry <= 20 && (why === "mass" || why === "fee")) { if (++shapeRej >= 5 && !dropped) { dropped = true; phase(`NODE_DROP node=${LABEL} reason=redeem_shape`); } }
   if (SOURCE === "self" && result !== "ok") markStale(fam, why); // tip moved: single-flight refresh, attempts continue on the cached tip
   // spent funding coin: drop it from the pool until the next refresh (change will appear)
@@ -168,5 +184,6 @@ while (true) {
   await sleep(20);
 }
 if (HB_MS > 0) phase(`HEARTBEAT sender=${LABEL} heartbeat_ms=${HB_MS} beats=${hbs}`);
+if (RELAYS.length) phase(`RELAY_DONE sender=${LABEL} relays=${RELAYS.length} sent=${relayN} ok=${relayOk}`);
 if (STAG > 0) phase(`DELOCK sender=${LABEL} delayed_fires=${delayed} stagger_ms=${STAG} lock_ms=${LOCK_MS}`);
 await sleep(3000); LOG.end(); try { await B.ask("quit", 3000); } catch {} await rpc.disconnect().catch(() => {}); process.exit(0);
