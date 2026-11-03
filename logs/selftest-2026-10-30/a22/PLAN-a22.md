@@ -24,3 +24,15 @@ Base: `../a19/PLAN-a19.md` (Saturday plan: f1/f2/f4 8 min each with 2 min gaps, 
 
 ## Expected
 Crit 2 fixed by the kit change; crit 3 likely to pass in the evening slot; crit 4 likely still 97–98 % without one of the changes above. Honest forecast: 9/10.
+
+## Daytime latency: what our data shows and what it can't decide (correction to SCORE-a21 fact 5)
+stp: TN10 network load is always about 60–70 TPS and the only high loads come from us, so outside network load is not the cause. SCORE-a21 fact 5 ("outside our node") is withdrawn as a cause. It only describes where the time is spent: after the desk RPC returned ok and before the accepting block's header.
+
+What the run data shows:
+- **Our rejects don't cause it.** Median latency of ok hops sent right after one of our own rejects vs right after an ok hop: a17 568 vs 557 ms, a18 618 vs 584, a19 1,013 vs 891, a20 1,028 vs 1,034, a21 1,010 vs 999. Inside each run the gap is small. Between the night and day runs the step is about 0.45 s, and it's there even after an ok hop.
+- **Our send pattern doesn't cause it.** Fire and tick attempts have the same latency within each run. f1 (one family, nothing to stagger) moved the same as f4. Our transactions per block went down, not up.
+- **The desk node side looks the same.** RPC p50 is 1 ms and p99 is 2–7 ms in all runs. The miner count on the desk is 0 in all runs. Block interval is about the same.
+
+What the data can't decide, because it wasn't recorded: desk peer count and which peers relay our transactions, mini mempool first-seen time (that would split propagation from inclusion), the network's miner mix by hour, and desk host load (other processes, the devnet, Windows scheduled tasks). This is the open question. Day vs night is the only factor that lines up, and the data can't name the cause behind it.
+
+**Added capture for a22 (read-only, nothing restarted):** desk peer info (count, per-peer ping) every 60 s; mini mempool first-seen time per own txid (desk→mini propagation); desk host CPU and the top processes every 10 s (including devnet pids, only observed); and the miner payout script of each accepting block, to get the miner mix by hour. If a22 (evening) comes in at about 0.57 s again, one daytime capture run is needed to compare the same fields.
