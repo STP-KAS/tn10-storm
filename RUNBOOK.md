@@ -223,3 +223,9 @@ Desk = the single sending lane. The mini counter (`counter.cjs`, own kaspad, rea
 10. **Latency + ramp** (Pulse 3 + 4): submit→acceptance measured for ≥ 99 % of accepted own txs (p50/p95 reported), and the ramp ran to 12/s or stopped by the rule (2 consecutive rate steps with < 3 % gain in acceptance per family).
 
 Gates (automatic, `gate.mjs`): f8 runs only if f4 was clean (landing ≥ 99 %, all 4 families landed, no fault events), else `control/SKIP-f8`; ramp writes `SKIP-<later steps>` after 2 consecutive < 3 % gains. A skipped f8 is not a failure of 4/6 but caps the run below a full GO (logged). Cap: a16–a20; stop at 10/10.
+
+**Criteria changes (stp, voice 3 Nov 07:46 CET, before a19):**
+- *Criterion 7 ok ratio*: ok ratio = 1 − non-contention errors / attempts (fixed steps). Contention rejects (`already_spent`, `orphan`, double-spend race losers) are the point of the test (same as 5.2) and are reported separately, not counted as failures. Target stays ≥ 99 %. Scorer bug found: `score-solo.py` computed ok / attempts, so every contention reject counted as a failure. All a17/a18 fixed-step rejects were contention (a17 116, a18 112; 0 non-contention). Rescore: a17 7 → 8/10, a18 6 → 7/10 (notes `RESCORE-3nov.md`; original score files unchanged).
+- *Criterion 4 for f1*: the 1-family step is judged on union landing (all counted seconds of all counted steps together, ≥ 99 %), not alone; f2/f4/f8 keep the per-step ≥ 99 % rule. Reason: one chain cannot fill every second (p95 hop latency ~1.45 s).
+- *Sender de-lock*: `stagger_ms` 700 → 300 (a18 kept families apart but f4 fell to 1.07 ok per family/s); `lock_ms` 150 unchanged.
+
