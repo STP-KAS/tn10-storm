@@ -18,15 +18,17 @@ I scored a23 because it had run and the repo stopped at "armed". The relay accou
 
 5. **Criterion 8.** I left a23's mini recount open. If you have the mini file, a matching count makes a23 a 9/10. A mismatch means the desk hop log and the mini diverged, and Saturday should not run until that is explained.
 
-6. **Funding abort.** 2,500 coins and 18,000 tKAS usable, from a23's 1,511 → 847 coins on about 6,000 hops. If the treasury cannot reach that, shorten f8 to 8 minutes in the plan rather than quietly lowering the abort line.
+6. **Funding abort.** 2,500 coins and 18,000 tKAS usable, from a23's 1,511 → 847 coins on about 6,000 hops. At 11:54Z on 5 Nov the lane was 1,132 coins and 7,739 usable tKAS, and three short probes ran after that reading. Recount before any arm. If it is still under 18,000, shorten f8 to 8 minutes in the plan rather than quietly lowering the abort line.
 
-7. **Three relays.** a24's config pointed at boson plus two more public nodes and never launched. I am not putting an untested second relay into Saturday. A short probe before Saturday is the way to add one. I did not run that probe: a23 already answered the boson question, and a surprise send would show up on his counter before he has this plan.
+7. **Three relays.** This one I did probe, after the plan was pushed. [CHASE.md](CHASE.md) probes 2, 3 and 6 submit each family to one of boson, vector and electron. Immediate split held about 1.3/s on every family and landed at 98.33% and 95%. It does not clear 99%. Saturday stays on boson alone.
+
+8. **99% landing.** Six 180 s probes on 5 Nov, same file. The best window was 98.89%. A delay on every hop spread the families and dropped family 4 to 0.47/s. A delay once is gone by the next hop (family 2's first ok submit was 400 ms late, and the nearest later submit was 1 ms from family 1). I am not moving the 99% line, and I am not putting a phase offset into Saturday. If you read the gaps differently, say so.
 
 ## What I checked on 5 Nov, read-only
 
 - Desk clock +1.3 ms against NTP. w32time source `pool.ntp.org`.
 - Desk node and the mini (through the tunnel) both synced on TN10, 8 peers each, mempool 0, DAA scores 2 apart.
-- No sender, no funding transaction, no kit file outside this folder changed.
+- No sender and no funding transaction at that hour. The afternoon probes are in [CHASE.md](CHASE.md). The kit change that ran them is on the desk only. It is not in this folder, and Saturday does not use it.
 - `node --test test-gate.mjs` and `python saturday_plan.py` passed. Output is in [TEST.md](TEST.md).
 
 If this is good enough, the remaining work before Saturday is mechanical: top up the lane, copy the gate onto the kit, deliver the id hashes before 18:40Z, and arm the 19:00Z slot. I can do that from the desk once you have answered the points above. If point 1 or 2 changes, the schedule script in this folder is the place to change it, and the tests should be run again.

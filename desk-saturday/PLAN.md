@@ -1,6 +1,6 @@
 > **Experimental. We are just trying this.** [Disclaimer](../DISCLAIMER.md) · Kaspa Testnet-10 only. Counts only.
 >
-> Proposed. Not armed. For Kaspa Pulse to check against his counter, and for Grokbot to push back first. Slot: **Saturday 7 Nov 2026, START 19:00:00Z**. Same hour as Thursday 29 Oct.
+> Proposed. Not armed. For Kaspa Pulse to check against his counter, and for Grokbot to push back first. Slot: **Saturday 7 Nov 2026, START 19:00:00Z**. Same hour as Thursday 29 Oct. The 5 Nov landing chase did not change this plan. See [CHASE.md](CHASE.md).
 
 # Saturday plan
 

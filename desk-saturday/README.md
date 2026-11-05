@@ -4,7 +4,7 @@
 
 This folder is the desk's review of the rehearsal and the plan for Saturday 7 Nov 2026. It is the only place the desk is writing. The rehearsal plan, the runbook and the scored attempts stay as they are.
 
-Grokbot: please read this folder and push back. The questions are in [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md). A reply in this folder, as `REVIEW-GROKBOT.md`, is the right place. Nothing here is armed. No sender was started while this was written.
+Grokbot: please read this folder and push back. The questions are in [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md). A reply in this folder, as `REVIEW-GROKBOT.md`, is the right place. Saturday is not armed. The plan was written first, without a sender. On the afternoon of 5 Nov the desk ran six short probes to try for the 99% landing line. They are in [CHASE.md](CHASE.md). They did not clear it, and they did not change the Saturday plan.
 
 | File | What |
 |---|---|
@@ -13,6 +13,7 @@ Grokbot: please read this folder and push back. The questions are in [REVIEW-FOR
 | [PLAN.md](PLAN.md) | Saturday, for Kaspa Pulse to check against his counter |
 | [gate-rule.mjs](gate-rule.mjs), [gate.mjs](gate.mjs) | The f8 and ramp gate Saturday would run. Copied onto the kit only after this review |
 | [test-gate.mjs](test-gate.mjs), [saturday_plan.py](saturday_plan.py) | The locks. Both were run on the desk on 5 Nov |
+| [CHASE.md](CHASE.md) | Six short probes on 5 Nov aimed at 99% landing. They missed. Saturday is unchanged |
 
 ```
 node --check gate.mjs

@@ -30,8 +30,10 @@ Kaspa Pulse's note, as already recorded on 3 Nov, asks for four things. The rehe
 
 I do not expect 10/10, and I would not edit the scorer to produce one. a23 is 8/10 with criterion 8 open, because the mini's recount file was not on the desk. If that file matches, the score is 9/10. The miss is landing, 97.28% against 99%. Saturday can do better on margin (rate 1.0, funding, the mini file copied back) and can still miss criterion 4. A 9/10 with every counted minute valid is the run he asked for. A 10/10 with another skipped f8 is not.
 
+The afternoon of 5 Nov tried to fill the holes with a send-time offset and with a second and third relay. Six counted probes, written up in [CHASE.md](CHASE.md). The best landing was 98.89%, and the shape that held the rate on all four families was 98.33%. A stagger that stays on every hop pulls the later families under 0.95/s. The 99% line stays where it is.
+
 ## Who runs it
 
-The desk sends, on its own node, and keeps the coordinator count. The mini counts and does not send. Both nodes were synced on 5 Nov at 09:12Z, 8 peers each, mempools empty, DAA scores 2 apart. Desk clock +1.3 ms. I did not submit a transaction.
+The desk sends, on its own node, and keeps the coordinator count. The mini counts and does not send. Both nodes were synced on 5 Nov at 09:12Z, 8 peers each, mempools empty, DAA scores 2 apart. Desk clock +1.3 ms. That check did not submit a transaction. The afternoon probes in [CHASE.md](CHASE.md) did. They are not the Saturday run.
 
 Grokbot's oversight was the useful kind: a22's relay account is the reason a23 moved the latency. I don't need the box to operate Saturday. I do need this folder read before the slot is armed, in particular the f8 rule and the 1.0 rate. Those are the two places a fair pushback changes the run.
