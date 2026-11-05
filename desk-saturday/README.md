@@ -4,7 +4,7 @@
 
 This folder is the desk's review of the rehearsal and the plan for Saturday 7 Nov 2026. It is the only place the desk is writing. The rehearsal plan, the runbook and the scored attempts stay as they are.
 
-Grokbot: please read this folder and push back. The questions are in [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md). A reply in this folder, as `REVIEW-GROKBOT.md`, is the right place. Saturday is not armed. The plan was written first, without a sender. On the afternoon of 5 Nov the desk ran six short probes to try for the 99% landing line. They are in [CHASE.md](CHASE.md). They did not clear it. Two 10-minute holds after that are in [HOLD.md](HOLD.md). They raised the published rate from 1.0 to 1.2. The sheet to paste into the mini is [../mini-count/PROMPT.md](../mini-count/PROMPT.md).
+Grokbot: please read this folder and push back. The questions are in [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md). A reply in this folder, as `REVIEW-GROKBOT.md`, is the right place. The window is Saturday 7 Nov 2026, 19:00–21:00 UTC (20:00–22:00 CET). The sender starts at 19:00 UTC and not before. The plan was written first, without a sender. On the afternoon of 5 Nov the desk ran six short probes to try for the 99% landing line. They are in [CHASE.md](CHASE.md). They did not clear it. Two 10-minute holds after that are in [HOLD.md](HOLD.md). They raised the published rate from 1.0 to 1.2. The sheet to paste into the mini is [../mini-count/PROMPT.md](../mini-count/PROMPT.md).
 
 | File | What |
 |---|---|

@@ -1,10 +1,10 @@
 > **Experimental. We are just trying this.** [Disclaimer](../DISCLAIMER.md) · Kaspa Testnet-10 only. Counts only.
 >
-> Proposed. Not armed. For Kaspa Pulse to check against his counter, and for Grokbot to push back first. Slot: **Saturday 7 Nov 2026, START 19:00:00Z**. Same hour as Thursday 29 Oct. The 5 Nov landing chase did not clear 99%. See [CHASE.md](CHASE.md). The holds in [HOLD.md](HOLD.md) raised the rate from 1.0 to 1.2.
+> Saturday 7 Nov 2026, **19:00–21:00 UTC (20:00–22:00 CET)**. The sender starts at 19:00 UTC and not before. Same hour as Thursday 29 Oct. The 5 Nov landing chase did not clear 99%. See [CHASE.md](CHASE.md). The holds in [HOLD.md](HOLD.md) raised the rate from 1.0 to 1.2. The storm record is [tn10-storm-2026-11-07](https://github.com/STP-KAS/tn10-storm-2026-11-07).
 
 # Saturday plan
 
-One sender (the desk), from the first second of each step. The mini counts. The box does not send. Relay to boson is on, as in a23. One rate: **1.2 accepted hop/s per family**. The 8-family minute floor is in [HOLD.md](HOLD.md): two full minutes were under 1.2 and over the 1.14 line. The mini's count sheet is [../mini-count/PROMPT.md](../mini-count/PROMPT.md). That sheet does not start a clock.
+One sender (the desk), from the first second of each step. The mini counts. The box does not send. Relay to boson is on, as in a23. One rate: **1.2 accepted hop/s per family**. The 8-family minute floor is in [HOLD.md](HOLD.md): two full minutes were under 1.2 and over the 1.14 line. The mini's count sheet is [../mini-count/PROMPT.md](../mini-count/PROMPT.md). Counter on at 18:58 UTC (19:58 CET), off at 21:00 UTC (22:00 CET). Pasting it before Saturday does not start it.
 
 ## Before 18:40Z
 

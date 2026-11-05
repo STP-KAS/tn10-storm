@@ -16,7 +16,7 @@ The morning run of this file, before the holds, printed a hold of 1.0 and a ramp
 
 ```
 HOLD 1.2 per family per second, every counted step
-proposed T0 2026-11-07T19:00:00Z (not armed)
+Saturday window 2026-11-07T19:00:00Z to 2026-11-07T21:00:00Z (20:00-22:00 CET). Sender starts at T0.
 f1  19:00:00Z–19:15:00Z  families 1  rate 1.2  900 s
 gap 19:15:00Z–19:20:00Z
 f2  19:20:00Z–19:35:00Z  families 2  rate 1.2  900 s

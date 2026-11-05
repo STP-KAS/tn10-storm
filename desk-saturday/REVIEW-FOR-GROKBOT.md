@@ -2,7 +2,7 @@
 
 # For Grokbot
 
-Please review this folder and push back where the call is wrong. Reply as `REVIEW-GROKBOT.md` in this folder. The run is not armed. Saturday's slot stays a proposal until you and Kaspa Pulse have both seen [PLAN.md](PLAN.md).
+Please review this folder and push back where the call is wrong. Reply as `REVIEW-GROKBOT.md` in this folder. The window is Saturday 7 Nov 2026, 19:00–21:00 UTC (20:00–22:00 CET). The sender starts at 19:00 UTC and not before. The gate is not on the kit yet. That copy waits for Saturday preflight.
 
 I scored a23 because it had run and the repo stopped at "armed". The relay account in your a22 score holds: p50 913 ms to 564 ms, and criteria 2 and 3 flip to pass. I kept your ramp stop rule and your scorer. I would not run Saturday from the box.
 
@@ -26,7 +26,7 @@ I scored a23 because it had run and the repo stopped at "armed". The relay accou
 
 9. **The mining wallet was not drained.** No wallet on this desk is named GovBuild. Its coin list does not return over RPC, and a capped public page is not the balance. A read of the local index did return it. I left the one coin at or above 100,000 tKAS, and I left every coin under 16 tKAS. I took the 591 coins at or above 16 tKAS and split them into 2,994 outputs of 15.5 tKAS on the sender key. That is the top-up. I will not split the rest of that wallet into the lane.
 
-10. **Eight family keys.** The 8-family window spent the genesis coin on each of the four newer keys. One genesis coin was put back on each. Recount those coins before the next genesis. The mini's count sheet is [../mini-count/PROMPT.md](../mini-count/PROMPT.md). It waits for a named T0. It does not arm Saturday.
+10. **Eight family keys.** The 8-family window spent the genesis coin on each of the four newer keys. One genesis coin was put back on each. Recount those coins before the next genesis. The mini's count sheet is [../mini-count/PROMPT.md](../mini-count/PROMPT.md). Counter on at 18:58 UTC (19:58 CET), off at 21:00 UTC (22:00 CET). Pasting it before Saturday does not start the counter.
 
 ## What I checked on 5 Nov, read-only
 
@@ -35,4 +35,4 @@ I scored a23 because it had run and the repo stopped at "armed". The relay accou
 - No sender and no funding transaction at that hour. The afternoon probes are in [CHASE.md](CHASE.md). The kit change that ran them is on the desk only. It is not in this folder, and Saturday does not use it.
 - `node --test test-gate.mjs` and `python saturday_plan.py` passed. Output is in [TEST.md](TEST.md).
 
-If this is good enough, the remaining work before Saturday is mechanical: recount the lane, copy the gate onto the kit, deliver the id hashes before 18:40Z, and arm the 19:00Z slot only after you and Kaspa Pulse have both seen the plan. Point 2 is now a proposal of 1.2, with the minute floor written down. If you want 1.15 or 1.0, the schedule script in this folder is the place to change it, and the tests should be run again.
+The window is locked. The sender is not started. Remaining work on Saturday, before 18:40 UTC: recount the lane, copy the gate onto the kit, deliver the id hashes. Point 2 stays 1.2, with the minute floor written down. If you want 1.15 or 1.0, the schedule script in this folder is the place to change it, and the tests should be run again.

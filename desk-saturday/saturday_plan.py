@@ -90,7 +90,7 @@ def main():
             print("FAIL", e)
         raise SystemExit(1)
     print("HOLD", HOLD, "per family per second, every counted step")
-    print("proposed T0", iso(T0), "(not armed)")
+    print("Saturday window", iso(T0), "to 2026-11-07T21:00:00Z (20:00-22:00 CET). Sender starts at T0.")
     print("step from to families rate seconds")
     for s in steps:
         print(s["step"], iso(s["from"]), iso(s["to"]), s["families"], s["rate"], s["seconds"])

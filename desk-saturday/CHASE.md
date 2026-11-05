@@ -2,7 +2,7 @@
 
 # Landing chase, 5 Nov 2026
 
-These probes did not change the Saturday shape except the rate, and they did not clear 99%. The rate those probes were configured at was 1.0. The rate [PLAN.md](PLAN.md) publishes now is 1.2, from the later holds in [HOLD.md](HOLD.md). This file is the attempt to clear the 99% landing line without moving the scorer. It did not. No full scored run was started from these probes. The Saturday slot is not armed.
+These probes did not change the Saturday shape except the rate, and they did not clear 99%. The rate those probes were configured at was 1.0. The rate [PLAN.md](PLAN.md) publishes now is 1.2, from the later holds in [HOLD.md](HOLD.md). This file is the attempt to clear the 99% landing line without moving the scorer. It did not. No full scored run was started from these probes. These probes are not Saturday. The window was set after them: Sat 7 Nov 2026, 19:00–21:00 UTC (20:00–22:00 CET).
 
 a23 is still 8/10, criterion 4 failed at 97.28% union landing, criterion 8 open. The holes are single seconds, shared by the families. A send-time offset would fill those seconds if one family's acceptance sat a few hundred milliseconds off the others, and the rate still held 0.95 of 1.0. Six counted probes, each 180 seconds, 4 families, configured rate 1.0, desk only, tested that. One more probe aborted at preflight and sent no counted hops.
 

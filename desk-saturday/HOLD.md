@@ -2,7 +2,7 @@
 
 # Holds, 5 Nov 2026
 
-Two internal windows, desk only, after the landing chase in [CHASE.md](CHASE.md). They are not the Saturday slot. Saturday stays proposed. The rate in [PLAN.md](PLAN.md) is **1.2** because of these windows.
+Two internal windows, desk only, after the landing chase in [CHASE.md](CHASE.md). They are not the Saturday slot. The Saturday window is 7 Nov 2026, 19:00–21:00 UTC (20:00–22:00 CET). The rate in [PLAN.md](PLAN.md) is **1.2** because of these windows.
 
 Configured rate 1.2 accepted hop/s per family. One relay, boson. No phase offset. Stagger 0. Heartbeat 900 ms. The mini counted both windows on its own node and matched every hop.
 
