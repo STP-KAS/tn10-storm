@@ -43,6 +43,8 @@ Governance and attention shift entirely to the **desk**.
 | [plan/PLAN.md](plan/PLAN.md) | Steps, pass criteria, ladder (4 fam base · 4 fam 3× · 8 fam base), fixes from 29 Oct |
 | [desk-saturday/](desk-saturday/README.md) | Saturday 7 Nov plan. Rate 1.2. Window 19:00–21:00 UTC |
 | [mini-count/](mini-count/PROMPT.md) | Sheet to paste into the mini for Saturday. Counter 18:58–21:00 UTC |
+| [build-count/](build-count/PROMPT.md) | Sheet to paste into the desk for Saturday. Sender starts 19:00 UTC |
+| [bot-count/](bot-count/PROMPT.md) | Sheet to paste into the box for Saturday. NTP only, no send |
 | [additional-testing/](additional-testing/PLAN.md) | Not Saturday. A later 16-family question, not run |
 | [go/README.md](go/README.md) | Shared GO rules and roles |
 | [go/GO-MINI.md](go/GO-MINI.md) | GO run sheet: mini PC main node |
