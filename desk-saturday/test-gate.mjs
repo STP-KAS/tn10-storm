@@ -35,12 +35,26 @@ test("a fault keeps f8 off", () => {
   }), false);
 });
 
-test("Saturday hold of 1.0 has room under the a23 f4 acceptance", () => {
+test("a step that holds its configured rate opens f8", () => {
+  assert.equal(f8Clean({
+    attemptSeconds: 900, windowSeconds: 900, firstSubmitS: 0.02,
+    acceptedPerFamilyS: 1.2, rate: 1.2, faults: 0,
+  }), true);
   assert.equal(f8Clean({
     attemptSeconds: 900, windowSeconds: 900, firstSubmitS: 0.02,
     acceptedPerFamilyS: 1.0, rate: 1.0, faults: 0,
   }), true);
-  assert.ok(1.182 >= 0.95 * 1.0);
+});
+
+test("5 Nov 8-family hold opens f8 at rate 1.2", () => {
+  // Slowest family over 600 s was 1.260. Worst full minute was 1.167.
+  // 0.95 * 1.2 = 1.14. The gate uses the step average, not the minute floor.
+  assert.equal(f8Clean({
+    attemptSeconds: 600, windowSeconds: 600, firstSubmitS: 0.026,
+    acceptedPerFamilyS: 1.260, rate: 1.2, faults: 0,
+  }), true);
+  assert.ok(1.167 >= 0.95 * 1.2);
+  assert.ok(1.167 < 1.2);
 });
 
 test("a23 ramp stops after the third step, same as the live gate", () => {

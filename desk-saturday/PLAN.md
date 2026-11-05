@@ -1,10 +1,10 @@
 > **Experimental. We are just trying this.** [Disclaimer](../DISCLAIMER.md) · Kaspa Testnet-10 only. Counts only.
 >
-> Proposed. Not armed. For Kaspa Pulse to check against his counter, and for Grokbot to push back first. Slot: **Saturday 7 Nov 2026, START 19:00:00Z**. Same hour as Thursday 29 Oct. The 5 Nov landing chase did not change this plan. See [CHASE.md](CHASE.md).
+> Proposed. Not armed. For Kaspa Pulse to check against his counter, and for Grokbot to push back first. Slot: **Saturday 7 Nov 2026, START 19:00:00Z**. Same hour as Thursday 29 Oct. The 5 Nov landing chase did not clear 99%. See [CHASE.md](CHASE.md). The holds in [HOLD.md](HOLD.md) raised the rate from 1.0 to 1.2.
 
 # Saturday plan
 
-One sender (the desk), from the first second of each step. The mini counts. The box does not send. Relay to boson is on, as in a23. One rate: **1.0 accepted hop/s per family**.
+One sender (the desk), from the first second of each step. The mini counts. The box does not send. Relay to boson is on, as in a23. One rate: **1.2 accepted hop/s per family**. The 8-family minute floor is in [HOLD.md](HOLD.md): two full minutes were under 1.2 and over the 1.14 line. The mini's count sheet is [../mini-count/PROMPT.md](../mini-count/PROMPT.md). That sheet does not start a clock.
 
 ## Before 18:40Z
 
@@ -19,7 +19,7 @@ Done in this order. A fail here aborts. No hop is sent.
 | Family ids | private file written, and the SHA-256 of each id delivered the same way as 29 Oct, before 18:40Z. On 29 Oct they arrived during the run |
 | Miner lines | one line per machine, `MINERS <machine> n=<count>`. Miners stay off. A miner found running stops the launch for a decision |
 | Boson relay | a connect check. If boson does not answer, abort. a22 without the relay could not hold 1.0 (f4 was 0.83/s) |
-| Desk lane | at least 2,500 coins and 18,000 tKAS usable. a23 went from 1,511 coins to 847 on about 6,000 included hops. Saturday's ceiling, if f8 runs, is about 17,000 included hops. The lane is topped up before genesis. This plan does not move coins |
+| Desk lane | at least 2,500 coins and 18,000 tKAS usable. a23 went from 1,511 coins to 847 on about 6,000 included hops. Saturday's ceiling, if f8 runs, is about 17,000 included hops. After the 5 Nov holds and a genesis refill, the sender key read 2,515 coins and 19,812 usable tKAS. That clears this line once. It does not clear it by enough for a second full run. Recount before genesis. Do not lower the line. If the recount is short, top up or shorten f8 |
 | Own mempool | census saved, so criterion 9 can separate leftovers from new txs |
 
 Genesis at 18:55Z for 8 families, so f8 can start without a second genesis. The sender refuses to start without the handoff, as in the rehearsal.
@@ -30,13 +30,13 @@ Sender on at `from`, off at `to`. Rate is attempts per family per second, capped
 
 | Step | UTC | Families | Rate | Seconds |
 |---|---|---:|---:|---:|
-| f1 | 19:00:00–19:15:00 | 1 | 1.0 | 900 |
+| f1 | 19:00:00–19:15:00 | 1 | 1.2 | 900 |
 | gap | 19:15:00–19:20:00 | 0 | 0 | 300 |
-| f2 | 19:20:00–19:35:00 | 2 | 1.0 | 900 |
+| f2 | 19:20:00–19:35:00 | 2 | 1.2 | 900 |
 | gap | 19:35:00–19:40:00 | 0 | 0 | 300 |
-| f4 | 19:40:00–19:55:00 | 4 | 1.0 | 900 |
+| f4 | 19:40:00–19:55:00 | 4 | 1.2 | 900 |
 | gap | 19:55:00–20:00:00 | 0 | 0 | 300 |
-| f8 | 20:00:00–20:15:00 | 8 | 1.0 | 900, only if f4 is clean |
+| f8 | 20:00:00–20:15:00 | 8 | 1.2 | 900, only if f4 is clean |
 | gap | 20:15:00–20:20:00 | 0 | 0 | 300 |
 
 A minute is valid when the desk sender attempted at least once in every second of that minute. The Thursday gap was minutes with a sender missing. There is one sender in this plan, and it is required from second 0 of f1, f2, f4 and, if it runs, f8.
@@ -46,7 +46,7 @@ A minute is valid when the desk sender attempted at least once in every second o
 All three, over 19:40–19:55Z:
 
 - an attempt in every one of the 900 seconds, first attempt by 19:40:01Z
-- accepted hops per family per second ≥ 0.95
+- accepted hops per family per second ≥ 1.14, which is 0.95 × 1.2
 - no sender-off, pool-low, node-drop or proc-exit
 
 Landing percent is logged (`GATE_F4`) and is not part of this decision. The internal score still fails a run under 99% landing. That fail stays visible. It does not delete the 8-family step.
@@ -63,16 +63,16 @@ If f8 ran, the block is 20:20:00–20:30:00Z:
 
 | Step | From | To | Rate |
 |---|---|---|---:|
-| r1 | 20:20:00 | 20:20:50 | 1.0 |
-| r2 | 20:21:00 | 20:21:50 | 1.1 |
-| r3 | 20:22:00 | 20:22:50 | 1.2 |
-| r4 | 20:23:00 | 20:23:50 | 1.3 |
-| r5 | 20:24:00 | 20:24:50 | 1.4 |
-| r6 | 20:25:00 | 20:25:50 | 1.5 |
-| r7 | 20:26:00 | 20:26:50 | 1.6 |
-| r8 | 20:27:00 | 20:27:50 | 1.7 |
-| r9 | 20:28:00 | 20:28:50 | 1.8 |
-| r10 | 20:29:00 | 20:29:50 | 1.9 |
+| r1 | 20:20:00 | 20:20:50 | 1.2 |
+| r2 | 20:21:00 | 20:21:50 | 1.3 |
+| r3 | 20:22:00 | 20:22:50 | 1.4 |
+| r4 | 20:23:00 | 20:23:50 | 1.5 |
+| r5 | 20:24:00 | 20:24:50 | 1.6 |
+| r6 | 20:25:00 | 20:25:50 | 1.7 |
+| r7 | 20:26:00 | 20:26:50 | 1.8 |
+| r8 | 20:27:00 | 20:27:50 | 1.9 |
+| r9 | 20:28:00 | 20:28:50 | 2.0 |
+| r10 | 20:29:00 | 20:29:50 | 2.1 |
 
 a23's acceptance was already flat at about 1.32/s per family under offered rates 5, 6 and 8. This ramp should stop within a step or two of that, if the network is the same. We stop there.
 
@@ -84,7 +84,7 @@ On the desk only, not in this repo:
 
 `accept_utc` is the accepting header time. One row per included hop. Kaspa Pulse uses it to compute submit → acceptance under load. The public write-up after the run carries p50, p95 and p99, and the accepted hops per family per step. No txid in the repo.
 
-Rehearsal figure, a23, fixed steps, same join: p50 564 ms, p95 1,028 ms, p99 1,290 ms (4,120 hops). Saturday measures it again at 1.0/s.
+Rehearsal figure, a23, fixed steps, same join: p50 564 ms, p95 1,028 ms, p99 1,290 ms (4,120 hops). The 5 Nov holds, same join, at 1.2/s: 4 families p50 582 ms, p95 1,022 ms, p99 1,378 ms (3,131 hops); 8 families p50 576 ms, p95 1,043 ms, p99 1,277 ms (6,155 of 6,163 hops). Saturday measures it again.
 
 ## After END
 
@@ -97,14 +97,14 @@ Rehearsal figure, a23, fixed steps, same join: p50 564 ms, p95 1,028 ms, p99 1,2
 
 Base load stays in his network count, as on every storm since he set that figure (about 56 tx/s). Our own addition is the hops above. Per complete UTC minute, by block time, the same way he counted 29 Oct:
 
-- 19:00–19:14: one family, about 1.0 hop/s of ours if the rate holds
-- 19:20–19:34: two families, about 2.0
-- 19:40–19:54: four families, about 4.0
-- 20:00–20:14: eight families, about 8.0, only if f4 was clean
+- 19:00–19:14: one family, about 1.2 hop/s of ours if the rate holds
+- 19:20–19:34: two families, about 2.4
+- 19:40–19:54: four families, about 4.8
+- 20:00–20:14: eight families, about 9.6, only if f4 was clean
 - the ramp minutes: four families, acceptance per family rising by small amounts and then flat
 
 Gaps should show base load and no hops from us. If a gap contains our hops, the sender failed to stop and the step boundaries in his count will smear. That is a fail on our side.
 
 ## Same as the rehearsal, left alone
 
-Heartbeat 900 ms, stagger 300 ms, de-lock, fee and mass caps, node-dead rule, loopback desk node, no miner, no box sender, no edit to the scorer. The 10 criteria in RUNBOOK 21 still apply after the run.
+Heartbeat 900 ms, stagger 0, no phase offset, de-lock, fee and mass caps, node-dead rule, loopback desk node, no miner, no box sender, no edit to the scorer. The 10 criteria in RUNBOOK 21 still apply after the run. A fire delay on every hop was tried on 5 Nov and dropped the later families under the line. Saturday does not add one.

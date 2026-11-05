@@ -41,6 +41,8 @@ Governance and attention shift entirely to the **desk**.
 | File | What is in it |
 |---|---|
 | [plan/PLAN.md](plan/PLAN.md) | Steps, pass criteria, ladder (4 fam base · 4 fam 3× · 8 fam base), fixes from 29 Oct |
+| [desk-saturday/](desk-saturday/README.md) | Saturday 7 Nov proposal, not armed. Rate 1.2 after the 5 Nov holds |
+| [mini-count/](mini-count/PROMPT.md) | Sheet to paste into the mini: when to count. It does not start a clock |
 | [go/README.md](go/README.md) | Shared GO rules and roles |
 | [go/GO-MINI.md](go/GO-MINI.md) | GO run sheet: mini PC main node |
 | [go/GO-BUILD.md](go/GO-BUILD.md) | GO run sheet: desk PC (Grok Build) |

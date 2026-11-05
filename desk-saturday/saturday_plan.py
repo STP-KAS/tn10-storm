@@ -2,7 +2,7 @@
 non-zero if a lock fails. Counts only. No node, no keys."""
 from datetime import datetime, timedelta, timezone
 
-HOLD = 1.0
+HOLD = 1.2
 RAMP_ON_S = 50
 RAMP_GAP_S = 10
 RAMP_STEPS = 10
@@ -55,7 +55,7 @@ def check(steps):
         errs.append("counted gaps are 300 s, long enough for the f8 decision")
     r = ramp(datetime(2026, 11, 7, 20, 20, tzinfo=timezone.utc))
     ons = [s for s in r if s["step"] != "gap"]
-    if [s["rate"] for s in ons] != [round(1.0 + 0.1 * i, 1) for i in range(10)]:
+    if [s["rate"] for s in ons] != [round(HOLD + 0.1 * i, 1) for i in range(10)]:
         errs.append("ramp rates")
     if any(s["families"] != 4 for s in ons):
         errs.append("ramp families")

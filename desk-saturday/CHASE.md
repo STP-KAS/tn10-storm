@@ -2,7 +2,7 @@
 
 # Landing chase, 5 Nov 2026
 
-Saturday's plan in [PLAN.md](PLAN.md) is unchanged. This file is the attempt to clear the 99% landing line without moving the scorer. It did not. No full scored run was started. The Saturday slot is not armed.
+These probes did not change the Saturday shape except the rate, and they did not clear 99%. The rate those probes were configured at was 1.0. The rate [PLAN.md](PLAN.md) publishes now is 1.2, from the later holds in [HOLD.md](HOLD.md). This file is the attempt to clear the 99% landing line without moving the scorer. It did not. No full scored run was started from these probes. The Saturday slot is not armed.
 
 a23 is still 8/10, criterion 4 failed at 97.28% union landing, criterion 8 open. The holes are single seconds, shared by the families. A send-time offset would fill those seconds if one family's acceptance sat a few hundred milliseconds off the others, and the rate still held 0.95 of 1.0. Six counted probes, each 180 seconds, 4 families, configured rate 1.0, desk only, tested that. One more probe aborted at preflight and sent no counted hops.
 
@@ -33,8 +33,8 @@ The empty seconds are short shared gaps, 1.05–1.59 s, with the previous accept
 
 ## What this does not change
 
-The scorer stays. Two chains per family stay off. Saturday stays one sender, rate 1.0, boson, the f8 rule in this folder, and the ramp already written. Three public relays were probed and did not raise landing above the boson result in a way that clears 99%, so Saturday does not gain them.
+The scorer stays. Two chains per family stay off. Saturday stays one sender, boson, and the f8 rule in this folder. The probes here were configured at 1.0. The published rate is now 1.2, and the ramp starts there. Three public relays were probed and did not raise landing above the boson result in a way that clears 99%, so Saturday does not gain them.
 
 ## Funding, measured during the chase
 
-At 11:54Z, before probes 4–6, the lane read 1,132 coins and 7,739 usable tKAS. The probe gate of 8,000 aborted one launch there. Genesis for that launch had already landed. No counted hops were sent. The Saturday abort line is 2,500 coins and 18,000 usable tKAS. Usable value is already under 18,000, and three probes ran after the reading. Recount before any arm. If it is still short of 18,000, shorten f8 as [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md) already says. Do not lower the line quietly.
+At 11:54Z, before probes 4–6, the lane read 1,132 coins and 7,739 usable tKAS. The probe gate of 8,000 aborted one launch there. Genesis for that launch had already landed. No counted hops were sent. The Saturday abort line is 2,500 coins and 18,000 usable tKAS. Usable value was under 18,000 at this reading, and three probes ran after it. A later recount is in [HOLD.md](HOLD.md). Recount again before any arm. If it is short of 18,000, shorten f8 as [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md) already says. Do not lower the line quietly.
