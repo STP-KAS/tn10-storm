@@ -19,7 +19,7 @@ Done in this order. A fail here aborts. No hop is sent.
 | Family ids | private file written, and the SHA-256 of each id delivered the same way as 29 Oct, before 18:40Z. On 29 Oct they arrived during the run |
 | Miner lines | one line per machine, `MINERS <machine> n=<count>`. Miners stay off. A miner found running stops the launch for a decision |
 | Boson relay | a connect check. If boson does not answer, abort. a22 without the relay could not hold 1.0 (f4 was 0.83/s) |
-| Desk lane | at least 2,500 coins and 18,000 tKAS usable. a23 went from 1,511 coins to 847 on about 6,000 included hops. Saturday's ceiling, if f8 runs, is about 17,000 included hops. After the 5 Nov holds and a genesis refill, the sender key read 2,515 coins and 19,812 usable tKAS. That clears this line once. It does not clear it by enough for a second full run. Recount before genesis. Do not lower the line. If the recount is short, top up or shorten f8 |
+| Desk lane | at least 2,500 coins and 18,000 tKAS usable. a23 went from 1,511 coins to 847 on about 6,000 included hops. Saturday's ceiling, if f8 runs, is about 17,000 included hops. After the 5 Nov holds, a genesis refill, and one selected top-up, the sender key read 5,509 coins and 57,237 usable tKAS. That covers the Saturday ceiling and still finishes above this line. Recount before genesis. Do not lower the line. If the recount is short, top up or shorten f8 |
 | Own mempool | census saved, so criterion 9 can separate leftovers from new txs |
 
 Genesis at 18:55Z for 8 families, so f8 can start without a second genesis. The sender refuses to start without the handoff, as in the rehearsal.

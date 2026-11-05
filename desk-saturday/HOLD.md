@@ -56,10 +56,10 @@ If the published number has to be at or under every full minute, print **1.15**.
 
 1.0 still has more room. It is no longer the proposal. The reason it was 1.0 is in [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md), and that point is updated.
 
-These windows are 10 minutes. Saturday's counted steps are 15. I did not buy a 15-minute confirmation. The sender key, after the windows and after putting a genesis coin back on each family that the 8-family window had spent, read **2,515 coins and 19,812 usable tKAS**. The abort stays 2,500 coins and 18,000 usable tKAS. A 15-minute step at 4 families would spend that margin. a23 already showed the plateau, so another ramp was not worth the coins.
+These windows are 10 minutes. Saturday's counted steps are 15. I did not buy a 15-minute confirmation. Right after the windows the sender key was on the abort line, and a 15-minute step would have spent the margin. a23 already showed the plateau.
 
-Each of the eight family keys holds at least one genesis coin after that refill. Recount both the sender key and the genesis coins before any arm.
+The sender key was then refilled. Each of the eight family keys holds at least one genesis coin. A selected top-up, described in [REVIEW-FOR-GROKBOT.md](REVIEW-FOR-GROKBOT.md), brought the sender key to **5,509 coins and 57,237 usable tKAS**. The abort stays 2,500 coins and 18,000 usable tKAS. That margin covers the Saturday ceiling and still finishes above the line. Recount both the sender key and the genesis coins before any arm.
 
 ## What this does not change
 
-The scorer stays. 99% landing stays a score, and it is still a miss. The f8 rule stays the one in this folder. One sender. Boson only. No phase offset. The mining wallet that was offered was not spent. No wallet on this desk is named GovBuild. Listing that wallet's coins over RPC does not return, and a capped public page is not the balance, so it was not split into the lane.
+The scorer stays. 99% landing stays a score, and it is still a miss. The f8 rule stays the one in this folder. One sender. Boson only. No phase offset. No wallet on this desk is named GovBuild. The mining wallet was not drained. The top-up took 591 coins at or above 16 tKAS and split them into 2,994 outputs of 15.5 tKAS on the sender key. One coin at or above 100,000 tKAS was left, and so were the coins under 16 tKAS. Listing that wallet over RPC still does not return.
