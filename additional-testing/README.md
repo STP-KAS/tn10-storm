@@ -4,4 +4,4 @@
 
 Not Saturday. The Saturday sheet to paste into the mini is [../mini-count/PROMPT.md](../mini-count/PROMPT.md).
 
-[PLAN.md](PLAN.md) is one later window: 16 families at the same 1.2 hold, after Saturday, and only if the 8-family step was clean. It has not been run.
+[PLAN.md](PLAN.md) points at the later plan map, [tn10-storm-plan-family-curve](https://github.com/STP-KAS/tn10-storm-plan-family-curve), turns **43a** and **43b**. No date. Not a run. Not Saturday.

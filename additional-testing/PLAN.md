@@ -4,32 +4,13 @@
 
 # Additional testing
 
-One question is still open, and it is not a higher rate.
+The plan for this question is [tn10-storm-plan-family-curve](https://github.com/STP-KAS/tn10-storm-plan-family-curve). Index row 43. No date. Not a run.
 
-The 5 Nov holds already sat at about 1.26–1.33 accepted hops/s per family, at 4 families and at 8. Raising the offered rate did not raise acceptance. A 16th family would not make one family faster. It would ask whether the **total** keeps adding about 1.2 hop/s for each new family, and whether the desk node, the relay and the coin pool still hold.
-
-That is worth one window **after** Saturday, only if Saturday's 8-family step was clean.
-
-## The window
-
-| | |
+| ID | Turn |
 |---|---|
-| When | After Saturday's write-up, on a clock named that day. Not 7 Nov |
-| Families | 16 |
-| Rate | 1.2 accepted hop/s per family, the same hold |
-| Length | 10 minutes, one step, no ramp |
-| Sender | Desk only. Boson only. Stagger 0. No phase offset |
-| Counter | Mini, same rules as Saturday, for this window only |
+| **43a** | 16 families, the desk sends, the mini counts, 15 minutes, offer 1.2 |
+| **43b** | The same shape, the mini sends, the desk counts, after 43a is written up |
 
-Stop at once if the slowest family is under 1.14 over the window, if any fault fires (sender-off, pool-low, node-drop, proc-exit), or if the sender key falls under 2,500 coins or 18,000 usable tKAS. Do not lower that line to finish the window.
+We do not claim this is the truth. We do not claim the result of a window that has not been run.
 
-Before it can run, eight new family keys need one genesis coin each, and the sender key is recounted. Those keys are not created in this file.
-
-## What this does not do
-
-- It does not change Saturday's steps, rate, or 19:00–21:00 UTC window.
-- It does not add a second sender.
-- It does not move the 99% landing line.
-- It does not spend the one mining-wallet coin at or above 100,000 tKAS, or the coins under 16 tKAS.
-
-More hops at 8 families is Saturday itself: the counted steps are 15 minutes, and the holds that set 1.2 were 10. A separate 15-minute rehearsal was not bought. Saturday is that measurement.
+This page used to describe a 10-minute step that stopped if the slowest family finished under 1.14. That wording is retired. The plan map is the one to follow. Sixteen families at the same 1.2 offer is still the question. It does not change Saturday's steps, rate, or clock.
