@@ -4,12 +4,12 @@
 
 # Additional testing
 
-The plan for this question is [tn10-storm-plan-family-curve](https://github.com/STP-KAS/tn10-storm-plan-family-curve). Index row 43. No date. Not a run.
+The plan for this question now lives in the rehearsal, [plan/SIXTEEN.md](https://github.com/STP-KAS/tn10-storm-2026-11-08/blob/main/plan/SIXTEEN.md). The separate family-curve repo is removed.
 
-| ID | Turn |
+| Step | Where |
 |---|---|
-| **43a** | 16 families, the desk sends, the mini counts, 15 minutes, offer 1.2 |
-| **43b** | The same shape, the mini sends, the desk counts, after 43a is written up |
+| 16 families, the desk sends, Mini counts, 15 minutes, offer 1.2 | The last part of the 8 Nov rehearsal, if the earlier part finishes clean |
+| The same shape, Mini sends, the desk counts | Not the rehearsal. No date |
 
 We do not claim this is the truth. We do not claim the result of a window that has not been run.
 
